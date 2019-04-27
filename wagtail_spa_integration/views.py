@@ -3,7 +3,7 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django_filters import rest_framework as filters
 from wagtail.api.v2.endpoints import PagesAPIEndpoint
-from wagtail.api.v2.utils import BadRequestError
+from wagtail.api.v2.utils import BadRequestError, page_models_from_string
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.core.models import Site
 from rest_framework.response import Response
@@ -16,11 +16,11 @@ class DraftPagesAPIEndpoint(PagesAPIEndpoint):
     Wagtail preview doesn't work with a JS client
 
     This tweaked Pages API will serve the latest draft version of a page when
-    ?draft=[draft_code] is set.
+    `?draft=[draft_code]` is set.
 
-    Added site (id) and site_hostname query parameters to filter by site.
+    Added `site` (id) and `site_hostname` query parameters to filter by site.
 
-    Added method for excluding some wagtail page types.
+    Added `exclude_type` to exclude wagtail page types
     """
     known_query_parameters = PagesAPIEndpoint.known_query_parameters.union([
         'site',
@@ -56,11 +56,20 @@ class DraftPagesAPIEndpoint(PagesAPIEndpoint):
         return queryset
     
     def exclude_page_types(self, queryset):
-        exclude_type = self.request.GET.getlist('exclude_type', None)
+        exclude_type = self.request.GET.get('exclude_type', None)
         if exclude_type is not None:
-            import ipdb; ipdb.set_trace()
-            queryset = queryset.not_type
+            try:
+                models = page_models_from_string(exclude_type)
+            except (LookupError, ValueError):
+                raise BadRequestError("type doesn't exist")
+            queryset = self.exclude_page_type(queryset, models)
         return queryset
+    
+    def exclude_page_type(self, queryset, page_models):
+        qs = queryset.none()
+        for model in page_models:
+            qs |= queryset.not_type(model)
+        return qs
         
     def filter_by_site(self):
         """ Allow API consumer to manually specify the request.site """

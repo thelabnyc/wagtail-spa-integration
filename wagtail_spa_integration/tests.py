@@ -6,6 +6,7 @@ from wagtail.contrib.redirects.models import Redirect
 from wagtail.tests.utils import WagtailPageTests
 from rest_framework.test import APIRequestFactory
 from .views import DraftPagesAPIEndpoint, RedirectViewSet
+from sandbox.models import FooPage
 
 
 class CoreTests(WagtailPageTests):
@@ -44,9 +45,13 @@ class CoreTests(WagtailPageTests):
     
     def test_exclude_type(self):
         home = Page.objects.last()
-        request = APIRequestFactory().get("")
+        foo = FooPage(title="foo")
+        home.add_child(instance=foo)
+        params = {'exclude_type': 'sandbox.FooPage'}
+        request = APIRequestFactory().get("", params)
         request.site = Site.objects.first()
         request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
-        page_list = DraftPagesAPIEndpoint.as_view({'get': 'list_view'})
-        params = {'exclude_type': 'sandbox.FooPage'}
+        page_list = DraftPagesAPIEndpoint.as_view({'get': 'listing_view'})
         res = page_list(request)
+        self.assertNotContains(res, foo.title)
+        self.assertEqual(res.data['meta']['total_count'], 1)
