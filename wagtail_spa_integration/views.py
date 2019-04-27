@@ -14,11 +14,18 @@ from .serializers import RedirectSerializer
 class DraftPagesAPIEndpoint(PagesAPIEndpoint):
     """
     Wagtail preview doesn't work with a JS client
+
     This tweaked Pages API will serve the latest draft version of a page when
     ?draft=[draft_code] is set.
+
+    Added site (id) and site_hostname query parameters to filter by site.
+
+    Added method for excluding some wagtail page types.
     """
     known_query_parameters = PagesAPIEndpoint.known_query_parameters.union([
         'site',
+        'site_hostname',
+        'exclude_type',
     ])
 
     def detail_view(self, request, pk):
@@ -43,15 +50,32 @@ class DraftPagesAPIEndpoint(PagesAPIEndpoint):
         return redirect(url)
 
     def get_queryset(self):
+        self.filter_by_site()
+        queryset = super().get_queryset()
+        queryset = self.exclude_page_types(queryset)
+        return queryset
+    
+    def exclude_page_types(self, queryset):
+        exclude_type = self.request.GET.getlist('exclude_type', None)
+        if exclude_type is not None:
+            import ipdb; ipdb.set_trace()
+            queryset = queryset.not_type
+        return queryset
+        
+    def filter_by_site(self):
+        """ Allow API consumer to manually specify the request.site """
         site_id = self.request.GET.get('site', None)
         if site_id:
             try:
                 self.request.site = Site.objects.get(id=site_id)
             except Site.DoesNotExist:
                 raise BadRequestError("Site not found")
-        queryset = super().get_queryset()
-        return queryset
-        
+        site_hostname = self.request.GET.get('site_hostname', None)
+        if site_hostname:
+            try:
+                self.request.site = Site.objects.get(hostname=site_hostname)
+            except Site.DoesNotExist:
+                raise BadRequestError("Site not found")
 
 
 class RedirectViewSet(viewsets.ReadOnlyModelViewSet):

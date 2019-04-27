@@ -41,3 +41,12 @@ class CoreTests(WagtailPageTests):
         response = redirect_list(request)
         self.assertContains(response, "example.com")
         self.assertNotContains(response, "no.com")
+    
+    def test_exclude_type(self):
+        home = Page.objects.last()
+        request = APIRequestFactory().get("")
+        request.site = Site.objects.first()
+        request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
+        page_list = DraftPagesAPIEndpoint.as_view({'get': 'list_view'})
+        params = {'exclude_type': 'sandbox.FooPage'}
+        res = page_list(request)
