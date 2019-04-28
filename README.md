@@ -10,7 +10,10 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 
 - Wagtail Redirect API
 - Preview button support (requires saving draft, unlike typical Wagtail)
+- Get page detail view by html_path (faster than find_view's redirect and more compatible with non-browser platforms)
+- Exclude pages by explicit site and/or page type
 - Supports multiple wagtail sites
+- Only adds features, does not break compatibility with Wagtail V2 Pages Endpoint
 
 # Usage
 
@@ -37,4 +40,4 @@ The api.example.com page actually wouldn't be used in a API only use case. You m
 
 Review the angular-wagtail project and reimplement it's logic. Essentially you'll need to make a page router that loads pages from the api and connects wagtail pages to your view layer. For example a wagtail page HomePage would need to be connected to a JS HomePageComponent.
 
-It's not likely that I'll be developing any of this, but if you make an integration for your favorite JS framework I'd be happy to note it here. Angular happens to be a good fit because we can expect certain resources to be available (Router Module, transfer state, etc).
+It's not likely that I'll be developing other integrations, but if you make an integration for your favorite JS framework I'd be happy to note it here. Angular happens to be a good fit because we can expect certain resources to be available (Router Module, transfer state, etc).

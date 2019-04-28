@@ -9,7 +9,7 @@ from .views import DraftPagesAPIEndpoint, RedirectViewSet
 from sandbox.models import FooPage
 
 
-class CoreTests(WagtailPageTests):
+class WagtailSPAIntegrationTests(WagtailPageTests):
     @override_settings(PREVIEW_DRAFT_CODE="abc")
     def test_draft_api(self):
         home = Page.objects.last()
@@ -55,3 +55,21 @@ class CoreTests(WagtailPageTests):
         res = page_list(request)
         self.assertNotContains(res, foo.title)
         self.assertEqual(res.data['meta']['total_count'], 1)
+    
+    def test_find_view(self):
+        home = Page.objects.last()
+        foo = FooPage(title="foo")
+        home.add_child(instance=foo)
+
+        url = "/api/v2/pages/find/"
+        params = {"html_path": "/"}
+        res = self.client.get(url, params)
+        self.assertEqual(res.status_code, 302)
+
+    def test_detail_by_path(self):
+        home = Page.objects.last()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {"html_path": "/"}
+        res = self.client.get(url, params)
+        self.assertContains(res, home.title)
