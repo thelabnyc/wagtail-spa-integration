@@ -13,7 +13,7 @@ from .serializers import RedirectSerializer
 from .utils import exclude_page_type
 
 
-class DraftPagesAPIEndpoint(PagesAPIEndpoint):
+class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
     """
     Wagtail preview doesn't work with a JS client
 

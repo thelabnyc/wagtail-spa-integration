@@ -14,11 +14,13 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 - Exclude pages by explicit site and/or page type
 - Supports multiple wagtail sites
 - Only adds features, does not break compatibility with Wagtail V2 Pages Endpoint
+- Nothing in this package is Angular specific, you can roll your own JS client to work with this.
 
 # Usage
 
-- Install from pypi (coming soon)
-- Ensure API is registered
+- Install from pypi `wagtail-spa-integration`
+- Add `wagtail_spa_integration` to INSTALLED_APPS
+- Ensure API is registered by following [Wagtail's API docs](https://docs.wagtail.io/en/v2.5.1/advanced_topics/api/v2/configuration.html). Use `wagtail_spa_integration.views.SPAExtendedPagesAPIEndpoint` instead of Wagtail's PagesAPIEndpoint.
 
 ## Multiple wagtail sites
 
@@ -35,6 +37,10 @@ This set up would require multiple Wagtail Sites and each Site needs it's own pa
 - passit.io's Homepage should be a child of the api.example.com page. And should have a Site.
 
 The api.example.com page actually wouldn't be used in a API only use case. You may simply make it the Page Type "wagtailcore.Page".
+
+## Usage with Angular
+
+Follow instructions on [Angular-Wagtail](https://gitlab.com/thelabnyc/angular-wagtail).
 
 ## Usage without angular-wagtail
 

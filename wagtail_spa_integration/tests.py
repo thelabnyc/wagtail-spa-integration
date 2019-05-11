@@ -5,7 +5,7 @@ from wagtail.core.models import Page, Site
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.tests.utils import WagtailPageTests
 from rest_framework.test import APIRequestFactory
-from .views import DraftPagesAPIEndpoint, RedirectViewSet
+from .views import SPAExtendedPagesAPIEndpoint, RedirectViewSet
 from sandbox.models import FooPage
 
 
@@ -21,7 +21,7 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         request = APIRequestFactory().get("")
         request.site = Site.objects.first()
         request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
-        page_detail = DraftPagesAPIEndpoint.as_view({'get': 'detail_view'})
+        page_detail = SPAExtendedPagesAPIEndpoint.as_view({'get': 'detail_view'})
         res = page_detail(request, pk=home.pk)
         self.assertContains(res, old_title)
         self.assertNotContains(res, new_title)
@@ -51,7 +51,7 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         request = APIRequestFactory().get("", params)
         request.site = Site.objects.first()
         request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
-        page_list = DraftPagesAPIEndpoint.as_view({'get': 'listing_view'})
+        page_list = SPAExtendedPagesAPIEndpoint.as_view({'get': 'listing_view'})
         res = page_list(request)
         self.assertNotContains(res, foo.title)
         self.assertEqual(res.data['meta']['total_count'], 1)
