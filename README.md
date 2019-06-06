@@ -27,14 +27,15 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 
 Wagtail itself can support a base API url and multiple "sites" For example:
 
-- A Base URL of api.example.com is where wagtail runs
+- api.example.com is the default site where wagtail runs
 - burkesoftware.com is one site served by wagtail
 - passit.io is another site served by the same wagtail instance
 
 This set up would require multiple Wagtail Sites and each Site needs it's own page.
 
-- burkesoftware.com's Homepage should be a child of the root page and have a Site.
-- passit.io's Homepage should be a child of the root page. And should have a Site.
+- api.example.com's page should be a child of the wagtail root page and be set as the default Site.
+- burkesoftware.com's Homepage should be a child of the api.example.com page and have a Site.
+- passit.io's Homepage should be a child of the api.example.com page page and should have a Site.
 
 `WAGTAILAPI_BASE_URL` must be set in settings.py so that the API shows the correct `detail_url` in the API.
 
