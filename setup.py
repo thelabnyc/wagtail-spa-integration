@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "wagtail-spa-integration",
-    version = "0.1.1",
+    version = "0.1.2",
     author = "David Burke",
     author_email = "david@thelabnyc.com",
     description = ("Tools for using Wagtail API with javascript single page apps"),

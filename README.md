@@ -22,6 +22,7 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 - Add `wagtail_spa_integration` to INSTALLED_APPS
 - Ensure API is registered by following [Wagtail's API docs](https://docs.wagtail.io/en/v2.5.1/advanced_topics/api/v2/configuration.html). Use `wagtail_spa_integration.views.SPAExtendedPagesAPIEndpoint` instead of Wagtail's PagesAPIEndpoint.
 - Add the redirect API view in your urls.py as you would for any rest framework ViewSet `from wagtail_spa_integration.views import RedirectViewSet`
+- In settings.py add `PREVIEW_DRAFT_CODE = "anything"` to use the preview feature.
 
 ## Multiple wagtail sites
 
