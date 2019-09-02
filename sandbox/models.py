@@ -11,3 +11,7 @@ class FooPage(Page):
         FieldPanel('body')
     ]
     api_fields = [APIField('body')]
+
+
+class BarPage(Page):
+    pass
