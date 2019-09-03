@@ -1,14 +1,15 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = "wagtail-spa-integration",
-    version = "0.1.2",
-    author = "David Burke",
-    author_email = "david@thelabnyc.com",
-    description = ("Tools for using Wagtail API with javascript single page apps"),
-    license = "Apache License",
-    keywords = "django wagtail",
-    url = "https://gitlab.com/thelabnyc/wagtail-spa-integration",
+    name="wagtail-spa-integration",
+    version="0.2.0",
+    author="David Burke",
+    author_email="david@thelabnyc.com",
+    description=(
+        "Tools for using Wagtail API with javascript single page apps"),
+    license="Apache License",
+    keywords="django wagtail",
+    url="https://gitlab.com/thelabnyc/wagtail-spa-integration",
     packages=find_packages(exclude=('sandbox.*', 'sandbox',)),
     include_package_data=True,
     classifiers=[

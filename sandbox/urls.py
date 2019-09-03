@@ -5,7 +5,7 @@ from django.contrib import admin
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
-from wagtail_spa_integration.views import RedirectViewSet
+from wagtail_spa_integration.views import RedirectViewSet, sitemap
 from rest_framework.routers import DefaultRouter
 from .api import api_router
 
@@ -15,6 +15,7 @@ router.register(r'redirects', RedirectViewSet, basename='redirects')
 urlpatterns = [
     url(r'^django-admin/', admin.site.urls),
 
+    url('^sitemap\.xml$', sitemap),
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^api/v2/', api_router.urls),
@@ -37,4 +38,5 @@ if settings.DEBUG:
 
     # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

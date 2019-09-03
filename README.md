@@ -1,4 +1,4 @@
-Project status - experiment. May change at any time without notice.
+Project status - almost stable. 1.0 will arrive soon along with change logs and semantic versioning.
 
 # Wagtail Single Page Application Integration
 
@@ -13,6 +13,7 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 - Get page detail view by html_path (faster than find_view's redirect and more compatible with non-browser platforms)
 - Exclude pages by explicit site and/or page type
 - Supports multiple wagtail sites
+  - Adds explicit site query parameter to wagtail sitemap.xml function
 - Only adds features, does not break compatibility with Wagtail V2 Pages Endpoint
 - Nothing in this package is Angular specific, you can roll your own JS client to work with this.
 
@@ -39,6 +40,10 @@ This set up would require multiple Wagtail Sites and each Site needs it's own pa
 - passit.io's Homepage should be a child of the api.example.com page page and should have a Site.
 
 `WAGTAILAPI_BASE_URL` must be set in settings.py so that the API shows the correct `detail_url` in the API.
+
+### Sitemap support
+
+If may be useful to explicitly request a sitemap.xml for a specific site. `from wagtail_spa_integration.views import sitemap` adds a query parameter `site` for this. Use it exactly as you would wagtail's sitemap. Then add a query parameter like `example.com/sitemap.xml?site=2`.
 
 ## Usage with Angular
 

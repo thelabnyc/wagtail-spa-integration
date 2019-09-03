@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django_filters import rest_framework as filters
 from wagtail.api.v2.endpoints import PagesAPIEndpoint
 from wagtail.api.v2.utils import BadRequestError, page_models_from_string
+from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.core.models import Site
 from rest_framework import viewsets, permissions
@@ -50,7 +51,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
         if draft_code and request.GET.get('draft') == draft_code:
             url += f"?draft={draft_code}"
         return redirect(url)
-    
+
     def detail_by_path_view(self, request):
         """
         This should work similar to find_view except that it returns the detail response instead
@@ -68,7 +69,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
 
         except self.model.DoesNotExist:
             raise Http404("not found")
-        
+
         self.kwargs['pk'] = obj.pk
         return self.detail_view(request, obj.pk)
 
@@ -77,7 +78,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
         queryset = super().get_queryset()
         queryset = self.exclude_page_types(queryset)
         return queryset
-    
+
     def exclude_page_types(self, queryset):
         exclude_type = self.request.GET.get('exclude_type', None)
         if exclude_type is not None:
@@ -87,7 +88,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
                 raise BadRequestError("type doesn't exist")
             queryset = exclude_page_type(queryset, models)
         return queryset
-    
+
     def filter_by_site(self):
         """
         Allow API consumer to manually specify the request.site
@@ -111,7 +112,8 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
     def get_urlpatterns(cls):
         urlpatterns = super().get_urlpatterns()
         urlpatterns.append(
-            url(r'^detail_by_path/$', cls.as_view({'get': 'detail_by_path_view'}), name='detail_by_path')
+            url(r'^detail_by_path/$',
+                cls.as_view({'get': 'detail_by_path_view'}), name='detail_by_path')
         )
         return urlpatterns
 
@@ -122,3 +124,15 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('old_path', 'site')
+
+
+def sitemap(request, sitemaps=None, **kwargs):
+    """ Extended wagtail sitemap view. Adds `site` query parameter to site site ID """
+    site_id = request.GET.get('site', None)
+    if site_id:
+        try:
+            request.site = Site.objects.get(id=site_id)
+        except Site.DoesNotExist:
+            pass
+
+    return wagtail_sitemap(request, sitemaps=sitemaps, **kwargs)
