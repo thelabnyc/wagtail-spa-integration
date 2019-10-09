@@ -162,6 +162,7 @@ MEDIA_URL = '/media/'
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "sandbox"
+WAGTAILAPI_LIMIT_MAX = 100
 PREVIEW_DRAFT_CODE = "abcdef"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -

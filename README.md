@@ -25,6 +25,12 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 - Add the redirect API view in your urls.py as you would for any rest framework ViewSet `from wagtail_spa_integration.views import RedirectViewSet`
 - In settings.py add `PREVIEW_DRAFT_CODE = "anything"` to use the preview feature.
 
+## Draft Code Security
+
+The draft code is computed from a sha256 hash of the date + PREVIEW_DRAFT_CODE + the page ID. This results in a expiring unique code per page. However that code does not require authentication. This is helpful for sharing the draft with others and avoids problems with using session authentication over several domains.
+
+If your security use case cannot allow a reused code that is also sent as a query parameter and thus may be logged, you should not use the draft preview feature. It's made under the assumption that the data behind it is not very secretive. If you do require secrecy, you should extend the SPAExtendedPagesAPIEndpoint endpoint and implement your own authentication mechanism. If working across domains, this may require token or JWT authentication.
+
 ## Multiple wagtail sites
 
 Wagtail itself can support a base API url and multiple "sites" For example:

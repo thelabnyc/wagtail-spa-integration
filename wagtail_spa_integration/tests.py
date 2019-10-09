@@ -6,11 +6,15 @@ from wagtail.contrib.redirects.models import Redirect
 from wagtail.tests.utils import WagtailPageTests
 from rest_framework.test import APIRequestFactory
 from .views import SPAExtendedPagesAPIEndpoint, RedirectViewSet, sitemap
+from .utils import hash_draft_code
 from sandbox.models import FooPage
 
 
+TEST_DRAFT_CODE = "abc"
+
+
 class WagtailSPAIntegrationTests(WagtailPageTests):
-    @override_settings(PREVIEW_DRAFT_CODE="abc")
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
     def test_draft_api(self):
         home = Page.objects.last()
         old_title = home.title
@@ -27,12 +31,43 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         self.assertContains(res, old_title)
         self.assertNotContains(res, new_title)
 
-        params = {'draft': 'abc'}
+        params = {'draft': hash_draft_code(TEST_DRAFT_CODE, home.pk)}
         request = APIRequestFactory().get("", params)
         request.site = Site.objects.first()
         request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
         res = page_detail(request, pk=home.pk)
         self.assertContains(res, new_title)
+
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_unpublished(self):
+        home = Page.objects.last()
+        new_title = 'edit it'
+        home.title = new_title
+        home.save_revision()
+        home.live = False
+        home.save()
+
+        params = {'draft': hash_draft_code(TEST_DRAFT_CODE, home.pk)}
+        request = APIRequestFactory().get("", params)
+        request.site = Site.objects.first()
+        request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
+        page_detail = SPAExtendedPagesAPIEndpoint.as_view(
+            {'get': 'detail_view'})
+        res = page_detail(request, pk=home.pk)
+        self.assertContains(res, new_title)
+
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_detail_by_path(self):
+        home = Page.objects.last()
+        foo = FooPage(title="foo")
+        home.add_child(instance=foo)
+        foo.live = False
+        foo.save()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {"html_path": foo.url, 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        res = self.client.get(url, params)
+        self.assertContains(res, "foo")
 
     def test_sitemap_with_site(self):
         home = Page.objects.last()
