@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="wagtail-spa-integration",
-    version="0.2.0",
+    version="0.3.0",
     author="David Burke",
     author_email="david@thelabnyc.com",
     description=(
