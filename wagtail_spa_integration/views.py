@@ -83,17 +83,15 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
     def detail_by_path_view(self, request):
         """
         This should work similar to find_view except that it returns the detail response instead
-        of a redirect.
+        of a redirect. It also supports draft codes.
         This can be useful with node, which has complications when handling redirects in a
         different manner than a web browser.
-        This extension also supports draft codes support. Wagtail's functions such as find_object
-        generally assume it should filter out drafts, thus this custom solution is needed that duplicates
-        some functionality in Wagtail.
         """
         queryset = self.get_queryset()
 
         if request.GET.get('draft'):
             queryset = self.get_queryset(include_drafts=True)
+            # We have to reimplement some of wagtail's logic to include unpublished pages
             root_page = request.site.root_page.specific
             path = request.GET['html_path']
             path_components = [component for component in path.split('/') if component]
