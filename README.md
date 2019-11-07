@@ -1,5 +1,3 @@
-Project status - almost stable. 1.0 will arrive soon along with change logs and semantic versioning.
-
 # Wagtail Single Page Application Integration
 
 This project provides some tools for using Wagtail as an API only CMS that a JS application will consume.
