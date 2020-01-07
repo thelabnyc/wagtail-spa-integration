@@ -69,6 +69,21 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         res = self.client.get(url, params)
         self.assertContains(res, "foo")
 
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_detail_by_path_with_changed_slug(self):
+        home = Page.objects.last()
+        foo = FooPage(title="foo")
+        home.add_child(instance=foo)
+        foo.live = False
+        foo.save()
+        foo.slug = "foo-edit"
+        foo.save_revision()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {"html_path": "/foo-edit/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        res = self.client.get(url, params)
+        self.assertContains(res, "foo")
+
     def test_sitemap_with_site(self):
         home = Page.objects.last()
         site2_hostname = "http://example.com"

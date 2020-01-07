@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from django.conf.urls import url
 from django.http import Http404
@@ -71,10 +72,19 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
             child_slug = path_components[0]
             remaining_components = path_components[1:]
 
-            try:
-                subpage = page.get_children().get(slug=child_slug)
-            except Page.DoesNotExist:
-                raise Http404
+            # Look for page slug first.
+            subpage = page.get_children().filter(slug=child_slug).first()
+            if not subpage:
+                # Look in revisions if page slug not found
+                slug_json = '"slug": "{}",'.format(child_slug)
+                subpage = page.get_children().filter(revisions__content_json__contains=slug_json).first()
+                if not subpage:
+                    raise Http404
+
+                # Confirm exact revision slug data (contains is not exact enough)
+                revision_slug = json.loads(subpage.get_latest_revision().content_json).get("slug")
+                if revision_slug != child_slug:
+                    raise Http404
 
             return self.route(subpage, request, remaining_components)
         return page
