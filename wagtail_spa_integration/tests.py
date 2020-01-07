@@ -69,6 +69,75 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         res = self.client.get(url, params)
         self.assertContains(res, "foo")
 
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_detail_by_path_with_changed_slug(self):
+        home = Page.objects.last()
+        foo = FooPage(title="foo")
+        home.add_child(instance=foo)
+        foo.live = False
+        foo.save()
+        foo.slug = "foo-edit"
+        foo.save_revision()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {"html_path": "/foo-edit/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        res = self.client.get(url, params)
+        self.assertContains(res, "foo")
+
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_detail_by_path_with_changed_slug_and_nested(self):
+        """ Ensure a deeply nested page works such as /sub/foo """
+        home = Page.objects.last()
+        sub_page = FooPage(title="sub")
+        home.add_child(instance=sub_page)
+        foo = FooPage(title="foo")
+        sub_page.add_child(instance=foo)
+        foo.live = False
+        foo.save()
+        foo.slug = "foo-edit"
+        foo.save_revision()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {"html_path": "/foo-edit/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        res = self.client.get(url, params)
+        self.assertContains(res, "foo")
+
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_detail_by_path_with_slug_404(self):
+        """ Pages detail_by_path 404s if no matching slug is found """
+        home = Page.objects.last()
+        foo = FooPage(title="foo")
+        home.add_child(instance=foo)
+        foo.live = False
+        foo.save()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {"html_path": "/no/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        res = self.client.get(url, params)
+        self.assertEquals(res.status_code, 404)
+
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_detail_by_path_with_too_many_slugs(self):
+        home = Page.objects.last()
+        foo = FooPage(title="foo")
+        foo2 = FooPage(title="foo2")
+        home.add_child(instance=foo)
+        home.add_child(instance=foo2)
+        foo.live = False
+        foo2.live = False
+        foo.save()
+        foo2.save()
+        foo.slug = "foo-edit"
+        foo.save_revision()
+        foo2.slug = "foo-edit"
+        foo2.save_revision()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {"html_path": "/foo-edit/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        res = self.client.get(url, params)
+
+        self.assertEqual(res.status_code, 404)
+
     def test_sitemap_with_site(self):
         home = Page.objects.last()
         site2_hostname = "http://example.com"

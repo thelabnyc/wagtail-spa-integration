@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from django.conf.urls import url
 from django.http import Http404
@@ -71,10 +72,24 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
             child_slug = path_components[0]
             remaining_components = path_components[1:]
 
-            try:
-                subpage = page.get_children().get(slug=child_slug)
-            except Page.DoesNotExist:
-                raise Http404
+            # Look for page slug first.
+            # Luckily, wagtail admin will not allow even a draft to have a slug that matches a published page
+            subpage = page.get_children().filter(slug=child_slug).first()
+            if not subpage:
+                # Look in revisions if page slug not found
+                slug_json = '"slug": "{}",'.format(child_slug)
+                # It's possible that multiple revision slugs exist for two different pages.
+                # In such a case, it picks the page with the most recent revision. The hash will then fail and 404. This is a limitation.
+                # In theory we could work around this by returning all matching pages and checking the draft hash of each one
+                # Merge requests welcome
+                subpage = page.get_descendants().filter(revisions__content_json__contains=slug_json).order_by('-revisions__created_at').first()
+                if not subpage:
+                    raise Http404
+
+                # Confirm exact revision slug data (contains is not exact enough)
+                revision_slug = json.loads(subpage.get_latest_revision().content_json).get("slug")
+                if revision_slug != child_slug:
+                    raise Http404
 
             return self.route(subpage, request, remaining_components)
         return page
