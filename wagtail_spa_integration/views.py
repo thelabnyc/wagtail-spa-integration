@@ -73,11 +73,16 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
             remaining_components = path_components[1:]
 
             # Look for page slug first.
+            # Luckily, wagtail admin will not allow even a draft to have a slug that matches a published page
             subpage = page.get_children().filter(slug=child_slug).first()
             if not subpage:
                 # Look in revisions if page slug not found
                 slug_json = '"slug": "{}",'.format(child_slug)
-                subpage = page.get_children().filter(revisions__content_json__contains=slug_json).first()
+                # It's possible that multiple revision slugs exist for two different pages.
+                # In such a case, it picks the page with the most recent revision. The hash will then fail and 404. This is a limitation.
+                # In theory we could work around this by returning all matching pages and checking the draft hash of each one
+                # Merge requests welcome
+                subpage = page.get_descendants().filter(revisions__content_json__contains=slug_json).order_by('-revisions__created_at').first()
                 if not subpage:
                     raise Http404
 
