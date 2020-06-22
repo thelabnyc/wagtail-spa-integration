@@ -1,8 +1,17 @@
-FROM python:3.7
-ENV PYTHONUNBUFFERED 1
+FROM python:3.8-slim
+ENV PYTHONUNBUFFERED=1 \
+  PORT=8080 \
+  POETRY_VERSION=1.0.9 \
+  POETRY_VIRTUALENVS_CREATE=false \
+  PIP_DISABLE_PIP_VERSION_CHECK=on
+ARG IGNORE_DEV_DEPS
+
 RUN mkdir /code
 WORKDIR /code
-ADD requirements.txt /code/
-RUN pip install -r requirements.txt
+
+RUN pip install "poetry==$POETRY_VERSION"
+COPY poetry.lock pyproject.toml /code/
+RUN poetry install --no-interaction --no-ansi
+
 ADD . /code/
 
