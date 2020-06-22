@@ -66,3 +66,7 @@ It's not likely that I'll be developing other integrations, but if you make an i
 Create fixtures with `./manage.py dumpdata --natural-foreign --indent 2 -e contenttypes -e auth.permission -e wagtailcore.groupcollectionpermission -e wagtailcore.grouppagepermission -e wagtailimages.rendition -e sessions > data.json`
 
 Load fixtures with `./manage.py loaddata data.json`
+
+## Publish to pypi
+
+Submit a tag starting with the letter v such as `v2.0.0` and CI will automatically publish

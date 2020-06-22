@@ -16,4 +16,14 @@ before_script:
 
 test:
   script:
-  - python manage.py test
+    - python manage.py test
+
+deploy:
+  script:
+    - poetry config pypi-token.pypi $PYPI_API_TOKEN
+    - poetry publish --build
+  only:
+    - tags
+  artifacts:
+    paths:
+      - dist/
