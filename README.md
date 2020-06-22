@@ -67,6 +67,8 @@ Create fixtures with `./manage.py dumpdata --natural-foreign --indent 2 -e conte
 
 Load fixtures with `./manage.py loaddata data.json`
 
+To load test fixtures with via an API - make a POST request to `/test-fixture/`
+
 ## Publish to pypi
 
 Submit a tag starting with the letter v such as `v2.0.0` and CI will automatically publish

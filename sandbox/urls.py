@@ -7,6 +7,7 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail_spa_integration.views import RedirectViewSet, sitemap
 from rest_framework.routers import DefaultRouter
+from .test_views import CreateFixturesView
 from .api import api_router
 
 router = DefaultRouter()
@@ -18,6 +19,7 @@ urlpatterns = [
     url('^sitemap\.xml$', sitemap),
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
+    url(r'^test-fixture/', CreateFixturesView.as_view()),
     url(r'^api/v2/', api_router.urls),
     url(r'^api/', include(router.urls)),
 
