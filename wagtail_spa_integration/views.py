@@ -4,7 +4,7 @@ from django.conf.urls import url
 from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from django_filters import rest_framework as filters
-from wagtail.api.v2.endpoints import PagesAPIEndpoint
+from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.api.v2.utils import BadRequestError, page_models_from_string, filter_page_type
 from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 from wagtail.contrib.redirects.models import Redirect
@@ -15,7 +15,7 @@ from .serializers import RedirectSerializer
 from .utils import exclude_page_type, hash_draft_code
 
 
-class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
+class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
     """
     Wagtail preview doesn't work with a JS client
 
@@ -26,7 +26,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIEndpoint):
 
     Added `exclude_type` to exclude wagtail page types
     """
-    known_query_parameters = PagesAPIEndpoint.known_query_parameters.union([
+    known_query_parameters = PagesAPIViewSet.known_query_parameters.union([
         'site',
         'site_hostname',
         'exclude_type',
@@ -229,7 +229,7 @@ def sitemap(request, sitemaps=None, **kwargs):
     site_id = request.GET.get('site', None)
     if site_id:
         try:
-            request.site = Site.objects.get(id=site_id)
+            request._wagtail_site = Site.objects.get(id=site_id)
         except Site.DoesNotExist:
             pass
 

@@ -58,3 +58,11 @@ Follow instructions on [Angular-Wagtail](https://gitlab.com/thelabnyc/angular-wa
 Review the angular-wagtail project and reimplement it's logic. Essentially you'll need to make a page router that loads pages from the api and connects wagtail pages to your view layer. For example a wagtail page HomePage would need to be connected to a JS HomePageComponent.
 
 It's not likely that I'll be developing other integrations, but if you make an integration for your favorite JS framework I'd be happy to note it here. Angular happens to be a good fit because we can expect certain resources to be available (Router Module, transfer state, etc).
+
+# Development
+
+## Test fixtures
+
+Create fixtures with `./manage.py dumpdata --natural-foreign --indent 2 -e contenttypes -e auth.permission -e wagtailcore.groupcollectionpermission -e wagtailcore.grouppagepermission -e wagtailimages.rendition -e sessions > data.json`
+
+Load fixtures with `./manage.py loaddata data.json`
