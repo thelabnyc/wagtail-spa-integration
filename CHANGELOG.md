@@ -1,3 +1,12 @@
+# 2.1.0
+
+- Base preview on wagtail-headless-preview to simplify our code base. Migration is optional in this release but may be required in the future.
+
+To migrate:
+
+- Remove `wagtail_spa_integration` from settings.py
+- Follow README.md instructions for to configure wagtail-headless-preview
+
 # 2.0.0
 
 - Minimum Wagtail version is now 2.8 - making this a major version bump
