@@ -223,6 +223,15 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('old_path', 'site')
 
+    @classmethod
+    def get_urlpatterns(cls):
+        """
+        This returns a list of URL patterns for the endpoint
+        """
+        return [
+            url(r'^$', cls.as_view({'get': 'list'})),
+        ]
+
 
 def sitemap(request, sitemaps=None, **kwargs):
     """ Extended wagtail sitemap view. Adds `site` query parameter to site site ID """

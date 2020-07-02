@@ -7,7 +7,7 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 ## Features
 
 - Wagtail Redirect API
-- Preview button support (requires saving draft, unlike typical Wagtail)
+- Preview button support thanks to wagtail-headless-preview
 - Get page detail view by html_path (faster than find_view's redirect and more compatible with non-browser platforms)
 - Exclude pages by explicit site and/or page type
 - Supports multiple wagtail sites
@@ -18,16 +18,32 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 # Usage
 
 - Install from pypi `wagtail-spa-integration`
-- Add `wagtail_spa_integration` to INSTALLED_APPS
-- Ensure API is registered by following [Wagtail's API docs](https://docs.wagtail.io/en/v2.5.1/advanced_topics/api/v2/configuration.html). Use `wagtail_spa_integration.views.SPAExtendedPagesAPIEndpoint` instead of Wagtail's PagesAPIEndpoint.
-- Add the redirect API view in your urls.py as you would for any rest framework ViewSet `from wagtail_spa_integration.views import RedirectViewSet`
-- In settings.py add `PREVIEW_DRAFT_CODE = "anything"` to use the preview feature.
+- Add `wagtail_headless_preview`, and `django_filters` to INSTALLED_APPS
+- Create a file in your project's directory called api.py and add the following
+```
+from wagtail.api.v2.router import WagtailAPIRouter
+from wagtail_spa_integration.views import SPAExtendedPagesAPIEndpoint, RedirectViewSet
+from wagtail_spa_integration.headless_preview_api import PagePreviewAPIViewSet
 
-## Draft Code Security
+api_router = WagtailAPIRouter('wagtailapi')
+api_router.register_endpoint('pages', SPAExtendedPagesAPIEndpoint)
+api_router.register_endpoint('page_preview', PagePreviewAPIViewSet)
+api_router.register_endpoint('redirects', RedirectViewSet)
+```
+- Add api_router to urlpatterns in urls.py
+```
+from .api import api_router
+...
+urlpatterns = [
+    url(r'^api/v2/', api_router.urls),
+```
+- In settings.py set HEADLESS_PREVIEW_CLIENT_URLS, see [wagtail-headless-preview](https://github.com/torchbox/wagtail-headless-preview#setup). Example:
+```
+HEADLESS_PREVIEW_CLIENT_URLS = {
+    'default': 'http://localhost:3000/preview',
+}
+```
 
-The draft code is computed from a sha256 hash of the date + PREVIEW_DRAFT_CODE + the page ID. This results in a expiring unique code per page. However that code does not require authentication. This is helpful for sharing the draft with others and avoids problems with using session authentication over several domains.
-
-If your security use case cannot allow a reused code that is also sent as a query parameter and thus may be logged, you should not use the draft preview feature. It's made under the assumption that the data behind it is not very secretive. If you do require secrecy, you should extend the SPAExtendedPagesAPIEndpoint endpoint and implement your own authentication mechanism. If working across domains, this may require token or JWT authentication.
 
 ## Multiple wagtail sites
 
@@ -53,11 +69,15 @@ If may be useful to explicitly request a sitemap.xml for a specific site. `from 
 
 Follow instructions on [Angular-Wagtail](https://gitlab.com/thelabnyc/angular-wagtail).
 
-## Usage without angular-wagtail
+## Usage with NextJS
+
+Coming soon. Preview [here](https://gitlab.com/thelabnyc/nextjs-wagtail).
+
+## Usage with rolling your own JS
 
 Review the angular-wagtail project and reimplement it's logic. Essentially you'll need to make a page router that loads pages from the api and connects wagtail pages to your view layer. For example a wagtail page HomePage would need to be connected to a JS HomePageComponent.
 
-It's not likely that I'll be developing other integrations, but if you make an integration for your favorite JS framework I'd be happy to note it here. Angular happens to be a good fit because we can expect certain resources to be available (Router Module, transfer state, etc).
+It's not likely that I'll be developing other integrations, but if you make an integration for your favorite JS framework I'd be happy to note it here. Angular happens to be a good fit because we can expect certain resources to be available (Router Module, transfer state, etc). NextJS works well too because of it's support for SSR and dynamic router option.
 
 # Development
 

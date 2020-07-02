@@ -5,8 +5,8 @@ from django.contrib import admin
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
-from wagtail_spa_integration.views import RedirectViewSet, sitemap
 from rest_framework.routers import DefaultRouter
+from wagtail_spa_integration.views import RedirectViewSet, sitemap
 from .test_views import CreateFixturesView
 from .api import api_router
 
@@ -16,7 +16,7 @@ router.register(r'redirects', RedirectViewSet, basename='redirects')
 urlpatterns = [
     url(r'^django-admin/', admin.site.urls),
 
-    url('^sitemap\.xml$', sitemap),
+    url(r'^sitemap\.xml$', sitemap),
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
     url(r'^test-fixture/', CreateFixturesView.as_view()),

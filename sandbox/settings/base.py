@@ -25,7 +25,6 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     'sandbox',
-    'wagtail_spa_integration',
     'corsheaders',
 
     'wagtail.contrib.forms',
@@ -44,6 +43,8 @@ INSTALLED_APPS = [
     'modelcluster',
     'taggit',
     'rest_framework',
+    'wagtail_headless_preview',
+    'django_filters',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -162,9 +163,11 @@ MEDIA_URL = '/media/'
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "sandbox"
-WAGTAILAPI_LIMIT_MAX = 100
+WAGTAILAPI_LIMIT_MAX = 1000
 WAGTAILAPI_BASE_URL = 'http://localhost:8000'
-PREVIEW_DRAFT_CODE = "abcdef"
+HEADLESS_PREVIEW_CLIENT_URLS = {
+    'default': 'http://localhost:3000/preview',
+}
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
