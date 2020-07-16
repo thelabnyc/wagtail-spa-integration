@@ -191,19 +191,23 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         Set query parameter `site` to the site id
         or set query parameter `site_hostname` to the hostname such as www.example.com 
         """
+        site = None
         site_id = self.request.GET.get('site', None)
         if site_id:
             try:
-                return Site.objects.get(id=site_id)
+                site = Site.objects.get(id=site_id)
             except Site.DoesNotExist:
                 raise BadRequestError("Site not found")
         site_hostname = self.request.GET.get('site_hostname', None)
         if site_hostname:
             try:
-                return Site.objects.get(hostname=site_hostname)
+                site = Site.objects.get(hostname=site_hostname)
             except Site.DoesNotExist:
                 raise BadRequestError("Site not found")
-        return Site.find_for_request(self.request)
+        if site is None:
+            site = Site.find_for_request(self.request)
+        self.request._wagtail_site = site
+        return site
 
     @classmethod
     def get_urlpatterns(cls):
