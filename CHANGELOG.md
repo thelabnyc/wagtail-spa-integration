@@ -1,3 +1,7 @@
+# 2.1.1
+
+- Fix Wagtail 2.9 compatibility issue with getting site
+
 # 2.1.0
 
 - Base preview on wagtail-headless-preview to simplify our code base. Migration is optional in this release but may be required in the future.

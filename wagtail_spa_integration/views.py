@@ -107,7 +107,8 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         if request.GET.get('draft'):
             queryset = self.get_queryset(include_drafts=True)
             # We have to reimplement some of wagtail's logic to include unpublished pages
-            root_page = request.site.root_page.specific
+            site = self.filter_by_site()
+            root_page = site.root_page.specific
             path = request.GET['html_path']
             path_components = [component for component in path.split('/') if component]
             obj = self.route(root_page, request, path_components)
@@ -142,13 +143,9 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
                 queryset = queryset.include_drafts_instead_of_live_public()
             return queryset
         """
-        self.filter_by_site()
-
-        request = self.request
-
         # Allow pages to be filtered to a specific type
         try:
-            models = page_models_from_string(request.GET.get('type', 'wagtailcore.Page'))
+            models = page_models_from_string(self.request.GET.get('type', 'wagtailcore.Page'))
         except (LookupError, ValueError):
             raise BadRequestError("type doesn't exist")
 
@@ -168,8 +165,9 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             queryset = queryset.public().live()
 
         # Filter by site
-        if request.site:
-            queryset = queryset.descendant_of(request.site.root_page, inclusive=True)
+        site = self.filter_by_site()
+        if site:
+            queryset = queryset.descendant_of(site.root_page, inclusive=True)
         else:
             # No sites configured
             queryset = queryset.none()
@@ -189,22 +187,23 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
 
     def filter_by_site(self):
         """
-        Allow API consumer to manually specify the request.site
+        Allow API consumer to manually specify the site
         Set query parameter `site` to the site id
         or set query parameter `site_hostname` to the hostname such as www.example.com 
         """
         site_id = self.request.GET.get('site', None)
         if site_id:
             try:
-                self.request.site = Site.objects.get(id=site_id)
+                return Site.objects.get(id=site_id)
             except Site.DoesNotExist:
                 raise BadRequestError("Site not found")
         site_hostname = self.request.GET.get('site_hostname', None)
         if site_hostname:
             try:
-                self.request.site = Site.objects.get(hostname=site_hostname)
+                return Site.objects.get(hostname=site_hostname)
             except Site.DoesNotExist:
                 raise BadRequestError("Site not found")
+        return Site.find_for_request(self.request)
 
     @classmethod
     def get_urlpatterns(cls):
