@@ -1,3 +1,7 @@
+# 2.1.2
+
+- Fix bug when editing pages with wagtail 2.10
+
 # 2.1.1
 
 - Fix Wagtail 2.9 compatibility issue with getting site
