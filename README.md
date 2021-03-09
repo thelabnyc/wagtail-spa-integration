@@ -71,7 +71,7 @@ Follow instructions on [Angular-Wagtail](https://gitlab.com/thelabnyc/angular-wa
 
 ## Usage with NextJS
 
-Coming soon. Preview [here](https://gitlab.com/thelabnyc/nextjs-wagtail).
+See [nextjs-wagtail](https://gitlab.com/thelabnyc/nextjs-wagtail).
 
 ## Usage with rolling your own JS
 
