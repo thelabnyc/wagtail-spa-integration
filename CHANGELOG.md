@@ -1,3 +1,7 @@
+# 2.1.3
+
+- Add Wagtail 2.13 compatibility (no breaking changes)
+
 # 2.1.2
 
 - Fix bug when editing pages with wagtail 2.10

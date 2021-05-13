@@ -5,7 +5,7 @@ from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from django_filters import rest_framework as filters
 from wagtail.api.v2.views import PagesAPIViewSet
-from wagtail.api.v2.utils import BadRequestError, page_models_from_string, filter_page_type
+from wagtail.api.v2.utils import BadRequestError, page_models_from_string
 from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.core.models import Site, Page
@@ -13,6 +13,15 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from .serializers import RedirectSerializer
 from .utils import exclude_page_type, hash_draft_code
+
+
+def filter_page_type(queryset, page_models):
+    qs = queryset.none()
+
+    for model in page_models:
+        qs |= queryset.type(model)
+
+    return qs
 
 
 class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
