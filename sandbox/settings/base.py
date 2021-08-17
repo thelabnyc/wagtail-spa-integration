@@ -172,3 +172,5 @@ HEADLESS_PREVIEW_CLIENT_URLS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
 CORS_ORIGIN_ALLOW_ALL = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
