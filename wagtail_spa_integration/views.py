@@ -234,6 +234,7 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('old_path', 'site')
+    model = Redirect
 
     @classmethod
     def get_urlpatterns(cls):
