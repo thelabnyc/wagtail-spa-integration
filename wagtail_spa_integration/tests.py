@@ -1,8 +1,8 @@
 from django.test import override_settings, RequestFactory
 from wagtail.api.v2.router import WagtailAPIRouter
-from wagtail.core.models import Page, Site
+from wagtail.models import Page, Site
 from wagtail.contrib.redirects.models import Redirect
-from wagtail.tests.utils import WagtailPageTests
+from wagtail.test.utils import WagtailPageTests
 from rest_framework.test import APIRequestFactory
 from sandbox.models import FooPage
 from .views import SPAExtendedPagesAPIEndpoint, RedirectViewSet, sitemap
