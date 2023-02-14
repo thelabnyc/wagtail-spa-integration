@@ -4,7 +4,8 @@ from rest_framework import views, response
 
 
 class CreateFixturesView(views.APIView):
-    """ View used in end to end testing to populate database with fixtures """
+    """View used in end to end testing to populate database with fixtures"""
+
     def post(self, request):
-        management.call_command(loaddata.Command(), 'data.json', verbosity=0)
+        management.call_command(loaddata.Command(), "data.json", verbosity=0)
         return response.Response()

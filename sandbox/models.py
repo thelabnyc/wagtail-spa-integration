@@ -8,10 +8,8 @@ from wagtail_headless_preview.models import HeadlessPreviewMixin
 class FooPage(HeadlessPreviewMixin, Page):
     body = models.CharField(max_length=255, blank=True)
 
-    content_panels = Page.content_panels + [
-        FieldPanel('body')
-    ]
-    api_fields = [APIField('body')]
+    content_panels = Page.content_panels + [FieldPanel("body")]
+    api_fields = [APIField("body")]
 
 
 class BarPage(HeadlessPreviewMixin, Page):

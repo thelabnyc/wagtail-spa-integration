@@ -1,374 +1,289 @@
 [
-{
-  "model": "wagtailcore.site",
-  "pk": 1,
-  "fields": {
-    "hostname": "localhost",
-    "port": 80,
-    "site_name": null,
-    "root_page": 2,
-    "is_default_site": true
-  }
-},
-{
-  "model": "wagtailcore.site",
-  "pk": 2,
-  "fields": {
-    "hostname": "localhost",
-    "port": 3000,
-    "site_name": "Bar Page",
-    "root_page": 3,
-    "is_default_site": false
-  }
-},
-{
-  "model": "wagtailcore.collection",
-  "pk": 1,
-  "fields": {
-    "path": "0001",
-    "depth": 1,
-    "numchild": 0,
-    "name": "Root"
-  }
-},
-{
-  "model": "auth.group",
-  "pk": 1,
-  "fields": {
-    "name": "Moderators",
-    "permissions": [
-      [
-        "access_admin",
-        "wagtailadmin",
-        "admin"
-      ],
-      [
-        "add_document",
-        "wagtaildocs",
-        "document"
-      ],
-      [
-        "change_document",
-        "wagtaildocs",
-        "document"
-      ],
-      [
-        "delete_document",
-        "wagtaildocs",
-        "document"
-      ],
-      [
-        "add_image",
-        "wagtailimages",
-        "image"
-      ],
-      [
-        "change_image",
-        "wagtailimages",
-        "image"
-      ],
-      [
-        "delete_image",
-        "wagtailimages",
-        "image"
+  {
+    "model": "wagtailcore.site",
+    "pk": 1,
+    "fields": {
+      "hostname": "localhost",
+      "port": 80,
+      "site_name": null,
+      "root_page": 2,
+      "is_default_site": true
+    }
+  },
+  {
+    "model": "wagtailcore.site",
+    "pk": 2,
+    "fields": {
+      "hostname": "localhost",
+      "port": 3000,
+      "site_name": "Bar Page",
+      "root_page": 3,
+      "is_default_site": false
+    }
+  },
+  {
+    "model": "wagtailcore.collection",
+    "pk": 1,
+    "fields": {
+      "path": "0001",
+      "depth": 1,
+      "numchild": 0,
+      "name": "Root"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Moderators",
+      "permissions": [
+        ["access_admin", "wagtailadmin", "admin"],
+        ["add_document", "wagtaildocs", "document"],
+        ["change_document", "wagtaildocs", "document"],
+        ["delete_document", "wagtaildocs", "document"],
+        ["add_image", "wagtailimages", "image"],
+        ["change_image", "wagtailimages", "image"],
+        ["delete_image", "wagtailimages", "image"]
       ]
-    ]
-  }
-},
-{
-  "model": "auth.group",
-  "pk": 2,
-  "fields": {
-    "name": "Editors",
-    "permissions": [
-      [
-        "access_admin",
-        "wagtailadmin",
-        "admin"
-      ],
-      [
-        "add_document",
-        "wagtaildocs",
-        "document"
-      ],
-      [
-        "change_document",
-        "wagtaildocs",
-        "document"
-      ],
-      [
-        "delete_document",
-        "wagtaildocs",
-        "document"
-      ],
-      [
-        "add_image",
-        "wagtailimages",
-        "image"
-      ],
-      [
-        "change_image",
-        "wagtailimages",
-        "image"
-      ],
-      [
-        "delete_image",
-        "wagtailimages",
-        "image"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "Editors",
+      "permissions": [
+        ["access_admin", "wagtailadmin", "admin"],
+        ["add_document", "wagtaildocs", "document"],
+        ["change_document", "wagtaildocs", "document"],
+        ["delete_document", "wagtaildocs", "document"],
+        ["add_image", "wagtailimages", "image"],
+        ["change_image", "wagtailimages", "image"],
+        ["delete_image", "wagtailimages", "image"]
       ]
-    ]
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$150000$2wk4CRdbGv3G$lgb+EQh/ehJZM8tda4PsuWIP0JouXdnVttV6lkJp+Y8=",
+      "last_login": "2020-06-22T14:11:22.889Z",
+      "is_superuser": true,
+      "username": "aa",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2020-06-16T21:32:07.482Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "wagtailcore.pagerevision",
+    "pk": 1,
+    "fields": {
+      "page": 3,
+      "submitted_for_moderation": false,
+      "created_at": "2020-06-16T21:34:38.463Z",
+      "user": ["aa"],
+      "content_json": "{\"pk\": 3, \"path\": \"000100010001\", \"depth\": 3, \"numchild\": 0, \"title\": \"Bar\", \"draft_title\": \"Bar\", \"slug\": \"bar\", \"content_type\": 6, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
+      "approved_go_live_at": null
+    }
+  },
+  {
+    "model": "wagtailcore.pagerevision",
+    "pk": 2,
+    "fields": {
+      "page": 3,
+      "submitted_for_moderation": false,
+      "created_at": "2020-06-16T21:34:52.086Z",
+      "user": ["aa"],
+      "content_json": "{\"pk\": 3, \"path\": \"000100010001\", \"depth\": 3, \"numchild\": 0, \"title\": \"Bar Home Page\", \"draft_title\": \"Bar\", \"slug\": \"bar\", \"content_type\": 6, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": \"2020-06-16T21:34:38.495Z\", \"last_published_at\": \"2020-06-16T21:34:38.495Z\", \"latest_revision_created_at\": \"2020-06-16T21:34:38.463Z\", \"live_revision\": 1}",
+      "approved_go_live_at": null
+    }
+  },
+  {
+    "model": "wagtailcore.pagerevision",
+    "pk": 3,
+    "fields": {
+      "page": 4,
+      "submitted_for_moderation": false,
+      "created_at": "2020-06-18T14:13:07.141Z",
+      "user": ["aa"],
+      "content_json": "{\"pk\": 4, \"path\": \"0001000100010001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Foo\", \"draft_title\": \"Foo\", \"slug\": \"foo\", \"content_type\": 5, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/foo/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"it's a foo\"}",
+      "approved_go_live_at": null
+    }
+  },
+  {
+    "model": "wagtailcore.pagerevision",
+    "pk": 4,
+    "fields": {
+      "page": 5,
+      "submitted_for_moderation": false,
+      "created_at": "2020-06-18T14:19:39.206Z",
+      "user": ["aa"],
+      "content_json": "{\"pk\": 5, \"path\": \"0001000100010002\", \"depth\": 4, \"numchild\": 0, \"title\": \"Bar\", \"draft_title\": \"Bar\", \"slug\": \"bar\", \"content_type\": 6, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/bar/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
+      "approved_go_live_at": null
+    }
+  },
+  {
+    "model": "wagtailcore.page",
+    "pk": 1,
+    "fields": {
+      "path": "0001",
+      "depth": 1,
+      "numchild": 1,
+      "title": "Root",
+      "draft_title": "Root",
+      "slug": "root",
+      "content_type": ["wagtailcore", "page"],
+      "live": true,
+      "has_unpublished_changes": false,
+      "url_path": "/",
+      "owner": null,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "latest_revision_created_at": null,
+      "live_revision": null
+    }
+  },
+  {
+    "model": "wagtailcore.page",
+    "pk": 2,
+    "fields": {
+      "path": "00010001",
+      "depth": 2,
+      "numchild": 1,
+      "title": "Welcome to your new Wagtail site!",
+      "draft_title": "Welcome to your new Wagtail site!",
+      "slug": "home",
+      "content_type": ["wagtailcore", "page"],
+      "live": true,
+      "has_unpublished_changes": false,
+      "url_path": "/home/",
+      "owner": null,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "latest_revision_created_at": null,
+      "live_revision": null
+    }
+  },
+  {
+    "model": "wagtailcore.page",
+    "pk": 3,
+    "fields": {
+      "path": "000100010001",
+      "depth": 3,
+      "numchild": 2,
+      "title": "Bar Home Page",
+      "draft_title": "Bar Home Page",
+      "slug": "bar",
+      "content_type": ["sandbox", "barpage"],
+      "live": true,
+      "has_unpublished_changes": false,
+      "url_path": "/home/bar/",
+      "owner": ["aa"],
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "first_published_at": "2020-06-16T21:34:38.495Z",
+      "last_published_at": "2020-06-16T21:34:52.114Z",
+      "latest_revision_created_at": "2020-06-16T21:34:52.086Z",
+      "live_revision": 2
+    }
+  },
+  {
+    "model": "wagtailcore.page",
+    "pk": 4,
+    "fields": {
+      "path": "0001000100010001",
+      "depth": 4,
+      "numchild": 0,
+      "title": "Foo",
+      "draft_title": "Foo",
+      "slug": "foo",
+      "content_type": ["sandbox", "foopage"],
+      "live": true,
+      "has_unpublished_changes": false,
+      "url_path": "/home/bar/foo/",
+      "owner": ["aa"],
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "first_published_at": "2020-06-18T14:13:07.177Z",
+      "last_published_at": "2020-06-18T14:13:07.177Z",
+      "latest_revision_created_at": "2020-06-18T14:13:07.141Z",
+      "live_revision": 3
+    }
+  },
+  {
+    "model": "wagtailcore.page",
+    "pk": 5,
+    "fields": {
+      "path": "0001000100010002",
+      "depth": 4,
+      "numchild": 0,
+      "title": "Bar",
+      "draft_title": "Bar",
+      "slug": "bar",
+      "content_type": ["sandbox", "barpage"],
+      "live": true,
+      "has_unpublished_changes": false,
+      "url_path": "/home/bar/bar/",
+      "owner": ["aa"],
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "first_published_at": "2020-06-18T14:19:39.244Z",
+      "last_published_at": "2020-06-18T14:19:39.244Z",
+      "latest_revision_created_at": "2020-06-18T14:19:39.206Z",
+      "live_revision": 4
+    }
+  },
+  {
+    "model": "sandbox.barpage",
+    "pk": 3,
+    "fields": {}
+  },
+  {
+    "model": "sandbox.barpage",
+    "pk": 5,
+    "fields": {}
+  },
+  {
+    "model": "sandbox.foopage",
+    "pk": 4,
+    "fields": {
+      "body": "it's a foo"
+    }
   }
-},
-{
-  "model": "auth.user",
-  "pk": 1,
-  "fields": {
-    "password": "pbkdf2_sha256$150000$2wk4CRdbGv3G$lgb+EQh/ehJZM8tda4PsuWIP0JouXdnVttV6lkJp+Y8=",
-    "last_login": "2020-06-22T14:11:22.889Z",
-    "is_superuser": true,
-    "username": "aa",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2020-06-16T21:32:07.482Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 1,
-  "fields": {
-    "page": 3,
-    "submitted_for_moderation": false,
-    "created_at": "2020-06-16T21:34:38.463Z",
-    "user": [
-      "aa"
-    ],
-    "content_json": "{\"pk\": 3, \"path\": \"000100010001\", \"depth\": 3, \"numchild\": 0, \"title\": \"Bar\", \"draft_title\": \"Bar\", \"slug\": \"bar\", \"content_type\": 6, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 2,
-  "fields": {
-    "page": 3,
-    "submitted_for_moderation": false,
-    "created_at": "2020-06-16T21:34:52.086Z",
-    "user": [
-      "aa"
-    ],
-    "content_json": "{\"pk\": 3, \"path\": \"000100010001\", \"depth\": 3, \"numchild\": 0, \"title\": \"Bar Home Page\", \"draft_title\": \"Bar\", \"slug\": \"bar\", \"content_type\": 6, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": \"2020-06-16T21:34:38.495Z\", \"last_published_at\": \"2020-06-16T21:34:38.495Z\", \"latest_revision_created_at\": \"2020-06-16T21:34:38.463Z\", \"live_revision\": 1}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 3,
-  "fields": {
-    "page": 4,
-    "submitted_for_moderation": false,
-    "created_at": "2020-06-18T14:13:07.141Z",
-    "user": [
-      "aa"
-    ],
-    "content_json": "{\"pk\": 4, \"path\": \"0001000100010001\", \"depth\": 4, \"numchild\": 0, \"title\": \"Foo\", \"draft_title\": \"Foo\", \"slug\": \"foo\", \"content_type\": 5, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/foo/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"it's a foo\"}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.pagerevision",
-  "pk": 4,
-  "fields": {
-    "page": 5,
-    "submitted_for_moderation": false,
-    "created_at": "2020-06-18T14:19:39.206Z",
-    "user": [
-      "aa"
-    ],
-    "content_json": "{\"pk\": 5, \"path\": \"0001000100010002\", \"depth\": 4, \"numchild\": 0, \"title\": \"Bar\", \"draft_title\": \"Bar\", \"slug\": \"bar\", \"content_type\": 6, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/home/bar/bar/\", \"owner\": 1, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null}",
-    "approved_go_live_at": null
-  }
-},
-{
-  "model": "wagtailcore.page",
-  "pk": 1,
-  "fields": {
-    "path": "0001",
-    "depth": 1,
-    "numchild": 1,
-    "title": "Root",
-    "draft_title": "Root",
-    "slug": "root",
-    "content_type": [
-      "wagtailcore",
-      "page"
-    ],
-    "live": true,
-    "has_unpublished_changes": false,
-    "url_path": "/",
-    "owner": null,
-    "seo_title": "",
-    "show_in_menus": false,
-    "search_description": "",
-    "go_live_at": null,
-    "expire_at": null,
-    "expired": false,
-    "locked": false,
-    "first_published_at": null,
-    "last_published_at": null,
-    "latest_revision_created_at": null,
-    "live_revision": null
-  }
-},
-{
-  "model": "wagtailcore.page",
-  "pk": 2,
-  "fields": {
-    "path": "00010001",
-    "depth": 2,
-    "numchild": 1,
-    "title": "Welcome to your new Wagtail site!",
-    "draft_title": "Welcome to your new Wagtail site!",
-    "slug": "home",
-    "content_type": [
-      "wagtailcore",
-      "page"
-    ],
-    "live": true,
-    "has_unpublished_changes": false,
-    "url_path": "/home/",
-    "owner": null,
-    "seo_title": "",
-    "show_in_menus": false,
-    "search_description": "",
-    "go_live_at": null,
-    "expire_at": null,
-    "expired": false,
-    "locked": false,
-    "first_published_at": null,
-    "last_published_at": null,
-    "latest_revision_created_at": null,
-    "live_revision": null
-  }
-},
-{
-  "model": "wagtailcore.page",
-  "pk": 3,
-  "fields": {
-    "path": "000100010001",
-    "depth": 3,
-    "numchild": 2,
-    "title": "Bar Home Page",
-    "draft_title": "Bar Home Page",
-    "slug": "bar",
-    "content_type": [
-      "sandbox",
-      "barpage"
-    ],
-    "live": true,
-    "has_unpublished_changes": false,
-    "url_path": "/home/bar/",
-    "owner": [
-      "aa"
-    ],
-    "seo_title": "",
-    "show_in_menus": false,
-    "search_description": "",
-    "go_live_at": null,
-    "expire_at": null,
-    "expired": false,
-    "locked": false,
-    "first_published_at": "2020-06-16T21:34:38.495Z",
-    "last_published_at": "2020-06-16T21:34:52.114Z",
-    "latest_revision_created_at": "2020-06-16T21:34:52.086Z",
-    "live_revision": 2
-  }
-},
-{
-  "model": "wagtailcore.page",
-  "pk": 4,
-  "fields": {
-    "path": "0001000100010001",
-    "depth": 4,
-    "numchild": 0,
-    "title": "Foo",
-    "draft_title": "Foo",
-    "slug": "foo",
-    "content_type": [
-      "sandbox",
-      "foopage"
-    ],
-    "live": true,
-    "has_unpublished_changes": false,
-    "url_path": "/home/bar/foo/",
-    "owner": [
-      "aa"
-    ],
-    "seo_title": "",
-    "show_in_menus": false,
-    "search_description": "",
-    "go_live_at": null,
-    "expire_at": null,
-    "expired": false,
-    "locked": false,
-    "first_published_at": "2020-06-18T14:13:07.177Z",
-    "last_published_at": "2020-06-18T14:13:07.177Z",
-    "latest_revision_created_at": "2020-06-18T14:13:07.141Z",
-    "live_revision": 3
-  }
-},
-{
-  "model": "wagtailcore.page",
-  "pk": 5,
-  "fields": {
-    "path": "0001000100010002",
-    "depth": 4,
-    "numchild": 0,
-    "title": "Bar",
-    "draft_title": "Bar",
-    "slug": "bar",
-    "content_type": [
-      "sandbox",
-      "barpage"
-    ],
-    "live": true,
-    "has_unpublished_changes": false,
-    "url_path": "/home/bar/bar/",
-    "owner": [
-      "aa"
-    ],
-    "seo_title": "",
-    "show_in_menus": false,
-    "search_description": "",
-    "go_live_at": null,
-    "expire_at": null,
-    "expired": false,
-    "locked": false,
-    "first_published_at": "2020-06-18T14:19:39.244Z",
-    "last_published_at": "2020-06-18T14:19:39.244Z",
-    "latest_revision_created_at": "2020-06-18T14:19:39.206Z",
-    "live_revision": 4
-  }
-},
-{
-  "model": "sandbox.barpage",
-  "pk": 3,
-  "fields": {}
-},
-{
-  "model": "sandbox.barpage",
-  "pk": 5,
-  "fields": {}
-},
-{
-  "model": "sandbox.foopage",
-  "pk": 4,
-  "fields": {
-    "body": "it's a foo"
-  }
-}
 ]

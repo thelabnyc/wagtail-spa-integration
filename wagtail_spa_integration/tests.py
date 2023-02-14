@@ -17,41 +17,39 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
     def test_draft_api(self):
         home = Page.objects.last()
         old_title = home.title
-        new_title = 'edit it'
+        new_title = "edit it"
         home.title = new_title
         home.save_revision()
 
         request = APIRequestFactory().get("")
         request.site = Site.objects.first()
-        request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
-        page_detail = SPAExtendedPagesAPIEndpoint.as_view(
-            {'get': 'detail_view'})
+        request.wagtailapi_router = WagtailAPIRouter("wagtailapi")
+        page_detail = SPAExtendedPagesAPIEndpoint.as_view({"get": "detail_view"})
         res = page_detail(request, pk=home.pk)
         self.assertContains(res, old_title)
         self.assertNotContains(res, new_title)
 
-        params = {'draft': hash_draft_code(TEST_DRAFT_CODE, home.pk)}
+        params = {"draft": hash_draft_code(TEST_DRAFT_CODE, home.pk)}
         request = APIRequestFactory().get("", params)
         request.site = Site.objects.first()
-        request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
+        request.wagtailapi_router = WagtailAPIRouter("wagtailapi")
         res = page_detail(request, pk=home.pk)
         self.assertContains(res, new_title)
 
     @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
     def test_draft_api_unpublished(self):
         home = Page.objects.last()
-        new_title = 'edit it'
+        new_title = "edit it"
         home.title = new_title
         home.save_revision()
         home.live = False
         home.save()
 
-        params = {'draft': hash_draft_code(TEST_DRAFT_CODE, home.pk)}
+        params = {"draft": hash_draft_code(TEST_DRAFT_CODE, home.pk)}
         request = APIRequestFactory().get("", params)
         request.site = Site.objects.first()
-        request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
-        page_detail = SPAExtendedPagesAPIEndpoint.as_view(
-            {'get': 'detail_view'})
+        request.wagtailapi_router = WagtailAPIRouter("wagtailapi")
+        page_detail = SPAExtendedPagesAPIEndpoint.as_view({"get": "detail_view"})
         res = page_detail(request, pk=home.pk)
         self.assertContains(res, new_title)
 
@@ -64,7 +62,10 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         foo.save()
 
         url = "/api/v2/pages/detail_by_path/"
-        params = {"html_path": foo.url, 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        params = {
+            "html_path": foo.url,
+            "draft": hash_draft_code(TEST_DRAFT_CODE, foo.pk),
+        }
         res = self.client.get(url, params)
         self.assertContains(res, "foo")
 
@@ -79,13 +80,16 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         foo.save_revision()
 
         url = "/api/v2/pages/detail_by_path/"
-        params = {"html_path": "/foo-edit/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        params = {
+            "html_path": "/foo-edit/",
+            "draft": hash_draft_code(TEST_DRAFT_CODE, foo.pk),
+        }
         res = self.client.get(url, params)
         self.assertContains(res, "foo")
 
     @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
     def test_draft_api_detail_by_path_with_changed_slug_and_nested(self):
-        """ Ensure a deeply nested page works such as /sub/foo """
+        """Ensure a deeply nested page works such as /sub/foo"""
         home = Page.objects.last()
         sub_page = FooPage(title="sub")
         home.add_child(instance=sub_page)
@@ -97,13 +101,16 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         foo.save_revision()
 
         url = "/api/v2/pages/detail_by_path/"
-        params = {"html_path": "/foo-edit/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        params = {
+            "html_path": "/foo-edit/",
+            "draft": hash_draft_code(TEST_DRAFT_CODE, foo.pk),
+        }
         res = self.client.get(url, params)
         self.assertContains(res, "foo")
 
     @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
     def test_draft_api_detail_by_path_with_slug_404(self):
-        """ Pages detail_by_path 404s if no matching slug is found """
+        """Pages detail_by_path 404s if no matching slug is found"""
         home = Page.objects.last()
         foo = FooPage(title="foo")
         home.add_child(instance=foo)
@@ -111,7 +118,10 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         foo.save()
 
         url = "/api/v2/pages/detail_by_path/"
-        params = {"html_path": "/no/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        params = {
+            "html_path": "/no/",
+            "draft": hash_draft_code(TEST_DRAFT_CODE, foo.pk),
+        }
         res = self.client.get(url, params)
         self.assertEquals(res.status_code, 404)
 
@@ -132,7 +142,10 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         foo2.save_revision()
 
         url = "/api/v2/pages/detail_by_path/"
-        params = {"html_path": "/foo-edit/", 'draft': hash_draft_code(TEST_DRAFT_CODE, foo.pk)}
+        params = {
+            "html_path": "/foo-edit/",
+            "draft": hash_draft_code(TEST_DRAFT_CODE, foo.pk),
+        }
         res = self.client.get(url, params)
 
         self.assertEqual(res.status_code, 404)
@@ -141,20 +154,18 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         home = Page.objects.last()
         site2_hostname = "http://example.com"
         site2 = Site.objects.create(root_page=home, hostname=site2_hostname)
-        params = {'site': site2.id}
+        params = {"site": site2.id}
         request = RequestFactory().get("sitemap.xml", params)
         res = sitemap(request)
         res.render()
         self.assertContains(res, site2_hostname)
 
     def test_redirect_viewset(self):
-        params = {'old_path': '/lol/'}
+        params = {"old_path": "/lol/"}
         request = APIRequestFactory().get("", params)
-        redirect_list = RedirectViewSet.as_view({'get': 'list'})
-        Redirect.objects.create(
-            old_path="/lol/", redirect_link="https://example.com")
-        Redirect.objects.create(
-            old_path="/test/", redirect_link="https://no.com")
+        redirect_list = RedirectViewSet.as_view({"get": "list"})
+        Redirect.objects.create(old_path="/lol/", redirect_link="https://example.com")
+        Redirect.objects.create(old_path="/test/", redirect_link="https://no.com")
         response = redirect_list(request)
         self.assertContains(response, "example.com")
         self.assertNotContains(response, "no.com")
@@ -163,15 +174,14 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
         home = Page.objects.last()
         foo = FooPage(title="foo")
         home.add_child(instance=foo)
-        params = {'exclude_type': 'sandbox.FooPage'}
+        params = {"exclude_type": "sandbox.FooPage"}
         request = APIRequestFactory().get("", params)
         request.site = Site.objects.first()
-        request.wagtailapi_router = WagtailAPIRouter('wagtailapi')
-        page_list = SPAExtendedPagesAPIEndpoint.as_view(
-            {'get': 'listing_view'})
+        request.wagtailapi_router = WagtailAPIRouter("wagtailapi")
+        page_list = SPAExtendedPagesAPIEndpoint.as_view({"get": "listing_view"})
         res = page_list(request)
         self.assertNotContains(res, foo.title)
-        self.assertEqual(res.data['meta']['total_count'], 1)
+        self.assertEqual(res.data["meta"]["total_count"], 1)
 
     def test_find_view(self):
         home = Page.objects.last()

@@ -5,4 +5,4 @@ from rest_framework import serializers
 class RedirectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Redirect
-        fields = ('old_path', 'is_permanent', 'site', 'link')
+        fields = ("old_path", "is_permanent", "site", "link")

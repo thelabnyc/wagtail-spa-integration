@@ -13,4 +13,3 @@ COPY poetry.lock pyproject.toml /code/
 RUN poetry install --no-interaction --no-ansi
 
 ADD . /code/
-
