@@ -1,3 +1,7 @@
+# 3.0.0
+
+- Add Wagtail 4.1.x compatibility. Drop all previous wagtail versions.
+
 # 2.1.3
 
 - Add Wagtail 2.13 compatibility (no breaking changes)

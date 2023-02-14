@@ -1,8 +1,7 @@
 [tool.poetry]
 name = "wagtail-spa-integration"
-version = "2.2"
+version = "3.0.0b1"
 description = "Tools for using Wagtail API with JavaScript single page apps"
-authors = ["David Burke <david@burkesoftware.com>"]
 license = "Apache License"
 classifiers=[
     "Development Status :: 5 - Production/Stable",
