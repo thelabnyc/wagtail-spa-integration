@@ -1,4 +1,3 @@
-import json
 from django.conf import settings
 from django.conf.urls import url
 from django.http import Http404
@@ -8,7 +7,7 @@ from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.api.v2.utils import BadRequestError, page_models_from_string
 from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 from wagtail.contrib.redirects.models import Redirect
-from wagtail.core.models import Site, Page
+from wagtail.models import Site, Page, Revision
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from .serializers import RedirectSerializer
@@ -58,7 +57,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         if self.check_valid_draft_code(pk):
             # Get all, not just live
             instance = get_object_or_404(Page.objects.all(), pk=pk).specific
-            instance = instance.get_latest_revision_as_page()
+            instance = instance.get_latest_revision_as_object()
             serializer = self.get_serializer(instance)
             return Response(serializer.data)
         return super().detail_view(request, pk)
@@ -86,17 +85,21 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             subpage = page.get_children().filter(slug=child_slug).first()
             if not subpage:
                 # Look in revisions if page slug not found
-                slug_json = '"slug": "{}",'.format(child_slug)
+
                 # It's possible that multiple revision slugs exist for two different pages.
                 # In such a case, it picks the page with the most recent revision. The hash will then fail and 404. This is a limitation.
                 # In theory we could work around this by returning all matching pages and checking the draft hash of each one
                 # Merge requests welcome
-                subpage = page.get_descendants().filter(revisions__content_json__contains=slug_json).order_by('-revisions__created_at').first()
-                if not subpage:
+                revision_qs = Revision.objects.filter(object_id__in=page.get_descendants().values_list('pk'),
+                                                  content__slug=child_slug).order_by(
+                    '-created_at')
+                if len(revision_qs):
+                    subpage = revision_qs.first().content_object
+                else:
                     raise Http404
 
                 # Confirm exact revision slug data (contains is not exact enough)
-                revision_slug = json.loads(subpage.get_latest_revision().content_json).get("slug")
+                revision_slug = subpage.get_latest_revision().content.get("slug")
                 if revision_slug != child_slug:
                     raise Http404
 

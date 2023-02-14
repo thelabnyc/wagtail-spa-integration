@@ -1,7 +1,7 @@
 from django.db import models
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
-from wagtail.core.models import Page
+from wagtail.models import Page
 from wagtail_headless_preview.models import HeadlessPreviewMixin
 
 

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'wagtail.images',
     'wagtail.search',
     'wagtail.admin',
-    'wagtail.core',
+    'wagtail',
     'wagtail.api.v2',
 
     'modelcluster',
@@ -170,7 +170,7 @@ HEADLESS_PREVIEW_CLIENT_URLS = {
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'http://example.com'
+WAGTAILADMIN_BASE_URL = 'http://example.com'
 CORS_ORIGIN_ALLOW_ALL = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
