@@ -3,7 +3,7 @@ name = "wagtail-spa-integration"
 version = "3.0.0b1"
 description = "Tools for using Wagtail API with JavaScript single page apps"
 authors = ["thelabnyc <thelabdev@thelabnyc.com>"]
-license = "Apache License"
+license = "ISC"
 classifiers=[
     "Development Status :: 5 - Production/Stable",
     'Environment :: Web Environment',
