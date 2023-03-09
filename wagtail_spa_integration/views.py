@@ -14,15 +14,6 @@ from .serializers import RedirectSerializer
 from .utils import exclude_page_type, hash_draft_code
 
 
-def filter_page_type(queryset, page_models):
-    qs = queryset.none()
-
-    for model in page_models:
-        qs |= queryset.type(model)
-
-    return qs
-
-
 class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
     """
     Wagtail preview doesn't work with a JS client
@@ -30,7 +21,6 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
     This tweaked Pages API will serve the latest draft version of a page when
     `?draft=[draft_code]` is set.
 
-    Added `site` (hostname) query parameters to filter by site.
 
     Added `exclude_type` to exclude wagtail page types
 
@@ -41,7 +31,6 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
 
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         [
-            "site",
             "exclude_type",
         ]
     )
@@ -125,8 +114,9 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         if request.GET.get("draft"):
             queryset = self.get_queryset(include_drafts=True)
             # We have to reimplement some of wagtail's logic to include unpublished pages
-            site = self.filter_by_site()
-            root_page = site.root_page.specific
+            if not hasattr(self.request, "_wagtail_site"):
+                raise BadRequestError("Site not found")
+            root_page = self.request._wagtail_site.root_page.specific
             path = request.GET["html_path"]
             path_components = [component for component in path.split("/") if component]
             obj = self.route(root_page, request, path_components)
@@ -153,7 +143,6 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         This non working shows a better intent of what we want to do
 
         def get_queryset(self):
-            self.filter_by_site()
             queryset = super().get_queryset()
             queryset = self.exclude_page_types(queryset)
             if self.check_valid_draft_code():
@@ -161,24 +150,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
                 queryset = queryset.include_drafts_instead_of_live_public()
             return queryset
         """
-        # Allow pages to be filtered to a specific type
-        try:
-            models = page_models_from_string(
-                self.request.GET.get("type", "wagtailcore.Page")
-            )
-        except (LookupError, ValueError):
-            raise BadRequestError("type doesn't exist")
-
-        if not models:
-            models = [Page]
-
-        if len(models) == 1:
-            queryset = models[0].objects.all()
-        else:
-            queryset = Page.objects.all()
-
-            # Filter pages by specified models
-            queryset = filter_page_type(queryset, models)
+        queryset = super().get_queryset()
 
         # Get live pages that are not in a private section
         if (
@@ -186,10 +158,10 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         ):  # Unless draft code
             queryset = queryset.public().live()
 
-        # Filter by site
-        site = self.filter_by_site()
-        if site:
-            queryset = queryset.descendant_of(site.root_page, inclusive=True)
+        if hasattr(self.request, "_wagtail_site"):
+            queryset = queryset.descendant_of(
+                self.request._wagtail_site.root_page, inclusive=True
+            )
         else:
             # No sites configured
             queryset = queryset.none()
@@ -206,23 +178,6 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
                 raise BadRequestError("type doesn't exist")
             queryset = exclude_page_type(queryset, models)
         return queryset
-
-    def filter_by_site(self):
-        """
-        Allow API consumer to manually specify the site
-        Set query parameter `site` to the hostname such as www.example.com
-        """
-        site = None
-        site_hostname = self.request.GET.get("site", None)
-        if site_hostname:
-            try:
-                site = Site.objects.get(hostname=site_hostname)
-            except Site.DoesNotExist:
-                raise BadRequestError("Site not found")
-        if site is None:
-            site = Site.find_for_request(self.request)
-        self.request._wagtail_site = site
-        return site
 
     @classmethod
     def get_urlpatterns(cls):
