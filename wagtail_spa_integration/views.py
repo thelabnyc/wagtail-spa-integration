@@ -30,15 +30,18 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
     This tweaked Pages API will serve the latest draft version of a page when
     `?draft=[draft_code]` is set.
 
-    Added `site` (id) and `site_hostname` query parameters to filter by site.
+    Added `site` (hostname) query parameters to filter by site.
 
     Added `exclude_type` to exclude wagtail page types
+
+    Note: Wagtail 4 does not support filter by site_id. Site query parameter must be passed as hostname
+    with an optional port value
+    E.g. www.devacurl.com:8000
     """
 
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         [
             "site",
-            "site_hostname",
             "exclude_type",
         ]
     )
@@ -207,17 +210,10 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
     def filter_by_site(self):
         """
         Allow API consumer to manually specify the site
-        Set query parameter `site` to the site id
-        or set query parameter `site_hostname` to the hostname such as www.example.com
+        Set query parameter `site` to the hostname such as www.example.com
         """
         site = None
-        site_id = self.request.GET.get("site", None)
-        if site_id:
-            try:
-                site = Site.objects.get(id=site_id)
-            except Site.DoesNotExist:
-                raise BadRequestError("Site not found")
-        site_hostname = self.request.GET.get("site_hostname", None)
+        site_hostname = self.request.GET.get("site", None)
         if site_hostname:
             try:
                 site = Site.objects.get(hostname=site_hostname)
