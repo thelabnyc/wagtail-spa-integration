@@ -48,8 +48,11 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
                     return True
         return False
 
-    def detail_view(self, request, pk):
-        if self.check_valid_draft_code(pk):
+    def detail_view(self, request, pk, is_draft_code_valid=False):
+        if is_draft_code_valid or self.check_valid_draft_code(pk):
+            # hacky solution in order to get draft pages in get_queryset()
+            self.kwargs["is_draft_code_valid"] = True
+
             # Get all, not just live
             instance = get_object_or_404(Page.objects.all(), pk=pk).specific
             instance = instance.get_latest_revision_as_object()
@@ -109,10 +112,10 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         This can be useful with node, which has complications when handling redirects in a
         different manner than a web browser.
         """
-        queryset = self.get_queryset()
+        has_draft_param = bool(request.GET.get("draft"))
+        queryset = self.get_queryset(include_drafts=has_draft_param)
 
-        if request.GET.get("draft"):
-            queryset = self.get_queryset(include_drafts=True)
+        if has_draft_param:
             # We have to reimplement some of wagtail's logic to include unpublished pages
             if not hasattr(self.request, "_wagtail_site"):
                 raise BadRequestError("Site not found")
@@ -122,7 +125,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             obj = self.route(root_page, request, path_components)
             if obj and self.check_valid_draft_code(obj.id):
                 self.kwargs["pk"] = obj.pk
-                return self.detail_view(request, obj.pk)
+                return self.detail_view(request, obj.pk, is_draft_code_valid=True)
 
         try:
             obj = self.find_object(queryset, request)
@@ -151,20 +154,10 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             return queryset
         """
         queryset = super().get_queryset()
-
-        # Get live pages that are not in a private section
-        if (
-            not self.check_valid_draft_code() and include_drafts is False
-        ):  # Unless draft code
-            queryset = queryset.public().live()
-
-        if hasattr(self.request, "_wagtail_site"):
-            queryset = queryset.descendant_of(
-                self.request._wagtail_site.root_page, inclusive=True
-            )
+        if include_drafts or self.kwargs.get("is_draft_code_valid"):
+            queryset = queryset | Page.objects.filter(live=False)
         else:
-            # No sites configured
-            queryset = queryset.none()
+            queryset = queryset.public()
 
         queryset = self.exclude_page_types(queryset)
         return queryset

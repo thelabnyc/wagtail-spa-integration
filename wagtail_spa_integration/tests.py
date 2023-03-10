@@ -150,6 +150,23 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
 
         self.assertEqual(res.status_code, 404)
 
+    @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
+    def test_draft_api_detail_with_incorrect_draft_value(self):
+        home = Page.objects.last()
+        foo = FooPage(title="foo")
+        home.add_child(instance=foo)
+        foo.live = False
+        foo.save()
+
+        url = "/api/v2/pages/detail_by_path/"
+        params = {
+            "html_path": "/foo-edit/",
+            "draft": "random_draft_code",  # some random draft code
+        }
+        res = self.client.get(url, params)
+
+        self.assertEqual(res.status_code, 404)
+
     def test_sitemap_with_site(self):
         home = Page.objects.last()
         site2_hostname = "http://example.com"
