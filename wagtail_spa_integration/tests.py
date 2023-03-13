@@ -169,23 +169,47 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
 
     def test_sitemap_with_site(self):
         home = Page.objects.last()
-        site2_hostname = "http://example.com"
-        site2 = Site.objects.create(root_page=home, hostname=site2_hostname)
-        params = {"site": site2.id}
+        site_hostname = "http://example.com"
+        site = Site.objects.create(root_page=home, hostname=site_hostname)
+        params = {"site": site.hostname}
         request = RequestFactory().get("sitemap.xml", params)
         res = sitemap(request)
         res.render()
-        self.assertContains(res, site2_hostname)
+        self.assertContains(res, site_hostname)
 
     def test_redirect_viewset(self):
+        home = Page.objects.last()
+        site_hostname = "http://example.com"
+        site = Site.objects.create(root_page=home, hostname=site_hostname)
         params = {"old_path": "/lol/"}
         request = APIRequestFactory().get("", params)
         redirect_list = RedirectViewSet.as_view({"get": "list"})
-        Redirect.objects.create(old_path="/lol/", redirect_link="https://example.com")
-        Redirect.objects.create(old_path="/test/", redirect_link="https://no.com")
+        Redirect.objects.create(
+            old_path="/lol/", redirect_link="https://example.com", site=site
+        )
+        Redirect.objects.create(
+            old_path="/test/", redirect_link="https://no.com", site=site
+        )
         response = redirect_list(request)
         self.assertContains(response, "example.com")
         self.assertNotContains(response, "no.com")
+        self.assertEqual(response.data[0]["site"], site_hostname)
+
+    def test_redirect_viewset_by_site_filter(self):
+        home = Page.objects.last()
+        site_hostname = "http://example.com"
+        site_hostname2 = "http://foo.com"
+        site = Site.objects.create(root_page=home, hostname=site_hostname)
+        site2 = Site.objects.create(root_page=home, hostname=site_hostname2)
+        Redirect.objects.create(site=site)
+        Redirect.objects.create(site=site2)
+
+        params = {"site": site_hostname}
+        request = APIRequestFactory().get("", params)
+        redirect_list = RedirectViewSet.as_view({"get": "list"})
+        response = redirect_list(request)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]["site"], site_hostname)
 
     def test_exclude_type(self):
         home = Page.objects.last()

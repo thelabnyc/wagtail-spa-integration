@@ -10,6 +10,7 @@ from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Site, Page, Revision
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
+from .filters import RedirectFilter
 from .serializers import RedirectSerializer
 from .utils import exclude_page_type, hash_draft_code
 
@@ -116,6 +117,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         queryset = self.get_queryset(include_drafts=has_draft_param)
 
         if has_draft_param:
+            self.set_request_site()
             # We have to reimplement some of wagtail's logic to include unpublished pages
             if not hasattr(self.request, "_wagtail_site"):
                 raise BadRequestError("Site not found")
@@ -153,6 +155,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
                 queryset = queryset.include_drafts_instead_of_live_public()
             return queryset
         """
+        self.set_request_site()
         queryset = super().get_queryset()
         if include_drafts or self.kwargs.get("is_draft_code_valid"):
             queryset = queryset | Page.objects.filter(live=False)
@@ -161,6 +164,15 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
 
         queryset = self.exclude_page_types(queryset)
         return queryset
+
+    def set_request_site(self):
+        site_hostname = self.request.GET.get("site", None)
+        if site_hostname:
+            try:
+                site = Site.objects.get(hostname=site_hostname)
+                self.request._wagtail_site = site
+            except Site.DoesNotExist:
+                pass
 
     def exclude_page_types(self, queryset):
         exclude_type = self.request.GET.get("exclude_type", None)
@@ -190,7 +202,7 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RedirectSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ("old_path", "site")
+    filterset_class = RedirectFilter
     model = Redirect
 
     @classmethod
@@ -204,11 +216,11 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def sitemap(request, sitemaps=None, **kwargs):
-    """Extended wagtail sitemap view. Adds `site` query parameter to site site ID"""
-    site_id = request.GET.get("site", None)
-    if site_id:
+    """Extended wagtail sitemap view. Adds `site` query parameter to site hostname"""
+    hostname = request.GET.get("site", None)
+    if hostname:
         try:
-            request._wagtail_site = Site.objects.get(id=site_id)
+            request._wagtail_site = Site.objects.get(hostname=hostname)
         except Site.DoesNotExist:
             pass
 
