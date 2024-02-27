@@ -13,3 +13,6 @@ COPY poetry.lock pyproject.toml /code/
 RUN poetry install --no-interaction --no-ansi
 
 ADD . /code/
+
+RUN mkdir /tox
+ENV TOX_WORK_DIR='/tox'
