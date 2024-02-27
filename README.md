@@ -20,6 +20,7 @@ It was designed to work with angular-wagtail - but works without Angular if you 
 - Install from pypi `wagtail-spa-integration`
 - Add `wagtail_headless_preview`, and `django_filters` to INSTALLED_APPS
 - Create a file in your project's directory called api.py and add the following
+
 ```
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail_spa_integration.views import SPAExtendedPagesAPIEndpoint, RedirectViewSet
@@ -30,20 +31,23 @@ api_router.register_endpoint('pages', SPAExtendedPagesAPIEndpoint)
 api_router.register_endpoint('page_preview', PagePreviewAPIViewSet)
 api_router.register_endpoint('redirects', RedirectViewSet)
 ```
+
 - Add api_router to urlpatterns in urls.py
+
 ```
 from .api import api_router
 ...
 urlpatterns = [
     url(r'^api/v2/', api_router.urls),
 ```
+
 - In settings.py set HEADLESS_PREVIEW_CLIENT_URLS, see [wagtail-headless-preview](https://github.com/torchbox/wagtail-headless-preview#setup). Example:
+
 ```
 HEADLESS_PREVIEW_CLIENT_URLS = {
     'default': 'http://localhost:3000/preview',
 }
 ```
-
 
 ## Multiple wagtail sites
 
