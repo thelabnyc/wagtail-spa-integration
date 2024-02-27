@@ -26,12 +26,19 @@ precommit:
 
 test:
   stage: test
-  image: python:3-slim
-  before_script:
-    - pip install poetry
-    - poetry install
+  image: "registry.gitlab.com/thelabnyc/python:${IMAGE}"
   script:
-    - python manage.py test
+    - pip install tox
+    - tox
+  coverage: '/^TOTAL.+?(\d+\%)$/'
+  parallel:
+    matrix:
+      - IMAGE: py310
+        TOX_SKIP_ENV: "^(?!py310-)"
+      - IMAGE: py311
+        TOX_SKIP_ENV: "^(?!py311-)"
+      - IMAGE: py312
+        TOX_SKIP_ENV: "^(?!py312-)"
 
 publish_pkg:
   stage: release

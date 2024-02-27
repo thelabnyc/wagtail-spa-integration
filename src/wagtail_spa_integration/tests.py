@@ -123,7 +123,7 @@ class WagtailSPAIntegrationTests(WagtailPageTests):
             "draft": hash_draft_code(TEST_DRAFT_CODE, foo.pk),
         }
         res = self.client.get(url, params)
-        self.assertEquals(res.status_code, 404)
+        self.assertEqual(res.status_code, 404)
 
     @override_settings(PREVIEW_DRAFT_CODE=TEST_DRAFT_CODE)
     def test_draft_api_detail_by_path_with_too_many_slugs(self):
