@@ -2,7 +2,7 @@
 name = "wagtail-spa-integration"
 version = "3.1.0"
 description = "Tools for using Wagtail API with JavaScript single page apps"
-authors = ["thelabnyc <thelabdev@thelabnyc.com>"]
+authors = ["thelab <thelabdev@thelab.co>"]
 license = "ISC"
 classifiers=[
     "Development Status :: 5 - Production/Stable",
