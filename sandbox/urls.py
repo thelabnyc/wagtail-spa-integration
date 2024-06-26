@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, re_path
+from django.urls import include, path
 from django.contrib import admin
 
 from wagtail.admin import urls as wagtailadmin_urls
@@ -11,20 +11,20 @@ from .test_views import CreateFixturesView
 from .api import api_router
 
 router = DefaultRouter()
-router.register(r"redirects", RedirectViewSet, basename="redirects")
+router.register("redirects", RedirectViewSet, basename="redirects")
 
 urlpatterns = [
-    re_path(r"^django-admin/", admin.site.urls),
-    re_path(r"^sitemap\.xml$", sitemap),
-    re_path(r"^admin/", include(wagtailadmin_urls)),
-    re_path(r"^documents/", include(wagtaildocs_urls)),
-    re_path(r"^test-fixture/", CreateFixturesView.as_view()),
-    re_path(r"^api/v2/", api_router.urls),
-    re_path(r"^api/", include(router.urls)),
+    path("django-admin/", admin.site.urls),
+    path("sitemap.xml", sitemap),
+    path("admin/", include(wagtailadmin_urls)),
+    path("documents/", include(wagtaildocs_urls)),
+    path("test-fixture/", CreateFixturesView.as_view()),
+    path("api/v2/", api_router.urls),
+    path("api/", include(router.urls)),
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:
-    re_path(r"", include(wagtail_urls)),
+    path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
     #    url(r'^pages/', include(wagtail_urls)),
