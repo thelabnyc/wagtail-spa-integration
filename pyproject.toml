@@ -23,8 +23,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-wagtail = ">=5.2.5,<6.0"
-Django = ">=5.0.6"
+wagtail = ">=5.2.5,<6.2"
+Django = ">=4.2"
 wagtail-headless-preview = "^0.8"
 django-filter = "^23.3"
 
