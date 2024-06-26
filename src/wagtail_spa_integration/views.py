@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import re_path
+from django.urls import path
 from django.http import Http404
 from django.shortcuts import redirect, get_object_or_404
 from django_filters import rest_framework as filters
@@ -188,8 +188,8 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
     def get_urlpatterns(cls):
         urlpatterns = super().get_urlpatterns()
         urlpatterns.append(
-            re_path(
-                r"^detail_by_path/$",
+            path(
+                "detail_by_path/",
                 cls.as_view({"get": "detail_by_path_view"}),
                 name="detail_by_path",
             )
@@ -211,7 +211,7 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
         This returns a list of URL patterns for the endpoint
         """
         return [
-            re_path(r"^$", cls.as_view({"get": "list"})),
+            path("", cls.as_view({"get": "list"})),
         ]
 
 
