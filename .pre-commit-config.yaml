@@ -19,6 +19,7 @@ repos:
     rev: "v3.3.3"
     hooks:
       - id: prettier
+        exclude: "^.git/"
         exclude_types:
           - html # Avoid choking on templates
 
@@ -27,5 +28,10 @@ repos:
     hooks:
       - id: black
         types: [file, python]
+
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.28.0
+    hooks:
+      - id: commitizen
 
 exclude: '\/(fragments|__snapshots__)\/.+\.(html|snap)$'
