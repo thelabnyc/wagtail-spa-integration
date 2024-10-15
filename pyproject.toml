@@ -29,7 +29,7 @@ wagtail-headless-preview = "^0.8"
 django-filter = "^23.3"
 
 [tool.poetry.dev-dependencies]
-django-cors-headers = "^4.4.0"
+django-cors-headers = "^4.5.0"
 flake8 = ">=7.1.1"
 tox = ">=4.21.2"
 
