@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wagtail-spa-integration"
-version = "3.1.0"
+version = "3.2.0"
 description = "Tools for using Wagtail API with JavaScript single page apps"
 authors = ["thelab <thelabdev@thelab.co>"]
 license = "ISC"
