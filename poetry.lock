@@ -1007,4 +1007,4 @@ wand = ["Wand (>=0.6,<1.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "bf87a3f737f5a7c2c184cd0a469b928a02e2997d667a01e14d6589f4e9ce5cad"
+content-hash = "861887603e648dab149622373cd08dde6eebb1f3caf6e1903208521b0f98cf4c"
