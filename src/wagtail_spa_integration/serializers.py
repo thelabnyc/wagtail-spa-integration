@@ -1,4 +1,5 @@
-from wagtail.contrib.redirects.models import Redirect, Site
+from wagtail.contrib.redirects.models import Redirect
+from wagtail.models import Site
 from rest_framework import serializers
 
 
