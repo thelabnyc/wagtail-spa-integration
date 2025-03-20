@@ -10,7 +10,9 @@ PageType = TypeVar("PageType", bound=Page)
 
 
 class PageQuerySetMixin(Protocol[PageType]):
-    def not_type(self, model_class: Type[PageType]) -> "PageQuerySet[PageType]": ...
+    def not_type(  # noqa: E704
+        self, model_class: Type[PageType]
+    ) -> "PageQuerySet[PageType]": ...
 
 
 class PageQuerySet(QuerySet[PageType], PageQuerySetMixin[PageType], Generic[PageType]):
