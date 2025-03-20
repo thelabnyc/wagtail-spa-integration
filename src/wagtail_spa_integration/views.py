@@ -1,15 +1,26 @@
+from typing import Any
+
 from django.conf import settings
-from django.urls import path
-from django.http import Http404
+from django.urls import path, URLPattern
+from django.http import (
+    Http404,
+    HttpResponsePermanentRedirect,
+    HttpResponseRedirect,
+    HttpRequest,
+)
 from django.shortcuts import redirect, get_object_or_404
+from django.template.response import TemplateResponse
 from django_filters import rest_framework as filters
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.api.v2.utils import BadRequestError, page_models_from_string
+from wagtail.contrib.sitemaps.sitemap_generator import Sitemap
 from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
 from wagtail.contrib.redirects.models import Redirect
-from wagtail.models import Site, Page, Revision
+from wagtail.models import Site, Page, PageQuerySet, Revision
 from rest_framework import viewsets, permissions
+from rest_framework.request import Request
 from rest_framework.response import Response
+
 from .filters import RedirectFilter
 from .serializers import RedirectSerializer
 from .utils import exclude_page_type, hash_draft_code
@@ -36,7 +47,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         ]
     )
 
-    def check_valid_draft_code(self, page_id=None):
+    def check_valid_draft_code(self, page_id: int | None = None) -> bool:
         """Check computed hashes for the Date + PREVIEW_DRAFT_CODE + Page ID"""
         settings_draft_code = getattr(settings, "PREVIEW_DRAFT_CODE", None)
         if settings_draft_code:
@@ -49,7 +60,9 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
                     return True
         return False
 
-    def detail_view(self, request, pk, is_draft_code_valid=False):
+    def detail_view(
+        self, request: Request, pk: int, is_draft_code_valid: bool = False
+    ) -> Response:
         if is_draft_code_valid or self.check_valid_draft_code(pk):
             # hacky solution in order to get draft pages in get_queryset()
             self.kwargs["is_draft_code_valid"] = True
@@ -59,9 +72,11 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             instance = instance.get_latest_revision_as_object()
             serializer = self.get_serializer(instance)
             return Response(serializer.data)
-        return super().detail_view(request, pk)
+        return super().detail_view(request, pk)  # type: ignore[no-any-return]
 
-    def find_view(self, request):
+    def find_view(
+        self, request: Request
+    ) -> HttpResponsePermanentRedirect | HttpResponseRedirect:
         """
         Override to append preview GET param to redirect url
         """
@@ -72,7 +87,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             url += f"?draft={draft_code}"
         return redirect(url)
 
-    def route(self, page, request, path_components):
+    def route(self, page: Page, request: Request, path_components: list[str]) -> Page:
         """Alternative version of Page.route that supports draft pages"""
         if path_components:
             # request is for a child of this page
@@ -106,7 +121,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             return self.route(subpage, request, remaining_components)
         return page
 
-    def detail_by_path_view(self, request):
+    def detail_by_path_view(self, request: Request) -> Response:
         """
         This should work similar to find_view except that it returns the detail response instead
         of a redirect. It also supports draft codes.
@@ -141,7 +156,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         self.kwargs["pk"] = obj.pk
         return self.detail_view(request, obj.pk)
 
-    def get_queryset(self, include_drafts=False):
+    def get_queryset(self, include_drafts: bool = False) -> PageQuerySet:
         """
         Override this to allow for providing drafts
 
@@ -165,7 +180,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         queryset = self.exclude_page_types(queryset)
         return queryset
 
-    def set_request_site(self):
+    def set_request_site(self) -> None:
         site_hostname = self.request.GET.get("site", None)
         if site_hostname:
             try:
@@ -174,7 +189,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
             except Site.DoesNotExist:
                 pass
 
-    def exclude_page_types(self, queryset):
+    def exclude_page_types(self, queryset: PageQuerySet) -> PageQuerySet:
         exclude_type = self.request.GET.get("exclude_type", None)
         if exclude_type is not None:
             try:
@@ -185,7 +200,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
         return queryset
 
     @classmethod
-    def get_urlpatterns(cls):
+    def get_urlpatterns(cls) -> list[URLPattern]:
         urlpatterns = super().get_urlpatterns()
         urlpatterns.append(
             path(
@@ -194,10 +209,10 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
                 name="detail_by_path",
             )
         )
-        return urlpatterns
+        return urlpatterns  # type: ignore[no-any-return]
 
 
-class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
+class RedirectViewSet(viewsets.ReadOnlyModelViewSet[Redirect]):
     queryset = Redirect.objects.all()
     serializer_class = RedirectSerializer
     permission_classes = [permissions.AllowAny]
@@ -206,7 +221,7 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
     model = Redirect
 
     @classmethod
-    def get_urlpatterns(cls):
+    def get_urlpatterns(cls) -> list[URLPattern]:
         """
         This returns a list of URL patterns for the endpoint
         """
@@ -215,13 +230,17 @@ class RedirectViewSet(viewsets.ReadOnlyModelViewSet):
         ]
 
 
-def sitemap(request, sitemaps=None, **kwargs):
+def sitemap(
+    request: HttpRequest,
+    sitemaps: dict[str, Sitemap] | None = None,
+    **kwargs: dict[str, Any],
+) -> TemplateResponse:
     """Extended wagtail sitemap view. Adds `site` query parameter to site hostname"""
     hostname = request.GET.get("site", None)
     if hostname:
         try:
-            request._wagtail_site = Site.objects.get(hostname=hostname)
+            request._wagtail_site = Site.objects.get(hostname=hostname)  # type: ignore[attr-defined]
         except Site.DoesNotExist:
             pass
 
-    return wagtail_sitemap(request, sitemaps=sitemaps, **kwargs)
+    return wagtail_sitemap(request, sitemaps=sitemaps, **kwargs)  # type: ignore[no-any-return]

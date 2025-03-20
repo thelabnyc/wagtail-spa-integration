@@ -13,7 +13,9 @@ ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+PREVIEW_DRAFT_CODE: str
+
 try:
-    from .local import *
+    from .local import *  # type:ignore[import-not-found]
 except ImportError:
     pass

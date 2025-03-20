@@ -1,15 +1,32 @@
 import hashlib
-from django.utils.timezone import datetime
+from typing import Generic, Protocol, Type, TypeVar
+
+from django.utils.timezone import datetime  # type: ignore[attr-defined]
+from django.db.models import QuerySet
+from wagtail.models import Page
 
 
-def exclude_page_type(queryset, page_models):
+PageType = TypeVar("PageType", bound=Page)
+
+
+class PageQuerySetMixin(Protocol[PageType]):
+    def not_type(self, model_class: Type[PageType]) -> "PageQuerySet[PageType]": ...
+
+
+class PageQuerySet(QuerySet[PageType], PageQuerySetMixin[PageType], Generic[PageType]):
+    pass
+
+
+def exclude_page_type(
+    queryset: PageQuerySet[PageType], page_models: list[Type[PageType]]
+) -> PageQuerySet[PageType]:
     qs = queryset.none()
     for model in page_models:
         qs |= queryset.not_type(model)
     return qs
 
 
-def hash_draft_code(code: str, page_id: int):
+def hash_draft_code(code: str, page_id: int) -> str:
     """sha256 of date + code + page id"""
     date_code = datetime.today().strftime("%Y%m%d")
     combined_code = date_code + code + str(page_id)
