@@ -1,5 +1,5 @@
 import hashlib
-from typing import Generic, Protocol, Type, TypeVar
+from typing import Generic, Protocol, TypeVar
 
 from django.utils.timezone import datetime  # type: ignore[attr-defined]
 from django.db.models import QuerySet
@@ -11,7 +11,7 @@ PageType = TypeVar("PageType", bound=Page)
 
 class PageQuerySetMixin(Protocol[PageType]):
     def not_type(  # noqa: E704
-        self, model_class: Type[PageType]
+        self, model_class: type[PageType]
     ) -> "PageQuerySet[PageType]": ...
 
 
@@ -20,7 +20,7 @@ class PageQuerySet(QuerySet[PageType], PageQuerySetMixin[PageType], Generic[Page
 
 
 def exclude_page_type(
-    queryset: PageQuerySet[PageType], page_models: list[Type[PageType]]
+    queryset: PageQuerySet[PageType], page_models: list[type[PageType]]
 ) -> PageQuerySet[PageType]:
     qs = queryset.none()
     for model in page_models:
