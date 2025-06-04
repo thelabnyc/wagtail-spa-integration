@@ -1,5 +1,21 @@
 # Changes
 
+## v3.3.0 (2025-06-04)
+
+### Feat
+
+- support Django 5.2 / Python 3.13 / Wagtail 6.4. Drop Django 5.0 / Python 3.10 / Wagtail 5.2
+
+### Fix
+
+- **deps**: update dependency django-filter to v25
+- wrong import
+- flake formatting
+
+### Refactor
+
+- add pyupgrade / django-upgrade precommit hooks
+
 ## v3.2.0 (2025-01-16)
 
 ### Feat
