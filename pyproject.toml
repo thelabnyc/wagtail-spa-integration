@@ -1,10 +1,12 @@
-[tool.poetry]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
 name = "wagtail-spa-integration"
 version = "3.3.0"
 description = "Tools for using Wagtail API with JavaScript single page apps"
-authors = ["thelab <thelabdev@thelab.co>"]
-license = "ISC"
-classifiers=[
+classifiers = [
     "Development Status :: 5 - Production/Stable",
     'Environment :: Web Environment',
     'Framework :: Django',
@@ -14,33 +16,30 @@ classifiers=[
     'Intended Audience :: Developers',
     "License :: OSI Approved :: Apache Software License",
 ]
-packages = [
-    { include = "wagtail_spa_integration", from = "src" }
+dependencies = ["wagtail (>=6.3)", "Django (>=4.2)", "wagtail-headless-preview (>=0.8,<0.9)", "django-filter (>=25.1,<26)"]
+requires-python = ">=3.11"
+
+[project.license]
+text = "ISC"
+
+[[project.authors]]
+name = "thelab"
+email = "thelabdev@thelab.co"
+
+[dependency-groups]
+dev = [
+    "mypy (==1.16.1)",
+    "django-cors-headers ==4.7.0",
+    "django-stubs (==5.2.1)",
+    "djangorestframework-stubs (==3.16.0)",
+    "tox>=4.27.0",
+    "tox-uv>=1.26.1",
+    "flake8>=7.3.0",
+    "coverage>=7.9.1",
 ]
 
-[tool.poetry.urls]
-"homepage" = "https://gitlab.com/thelabnyc/wagtail-spa-integration"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-wagtail = ">=6.3"
-Django = ">=4.2"
-wagtail-headless-preview = "^0.8"
-django-filter = "^25.1"
-
-[tool.poetry.dev-dependencies]
-django-cors-headers = "4.7.0"
-flake8 = "==7.3.0"
-tox = "==4.27.0"
-
-[tool.poetry.group.dev.dependencies]
-mypy = "1.16.1"
-django-stubs = "5.2.1"
-djangorestframework-stubs = "3.16.0"
-
-[build-system]
-requires = [ "poetry-core>=2.1.2",]
-build-backend = "poetry.core.masonry.api"
+[tool.hatch.build.targets.wheel]
+packages = ["wagtail_spa_integration"]
 
 [tool.commitizen]
 name = "cz_conventional_commits"
@@ -49,7 +48,7 @@ gpg_sign = true
 tag_format = "v$version"
 update_changelog_on_bump = true
 changelog_merge_prerelease = true
-version_provider = "poetry"
+version_provider = "pep621"
 version_scheme = "pep440"
 version_files = [
     "pyproject.toml:version",
@@ -102,6 +101,7 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = "sandbox.models"
 ignore_errors = true
+
 
 [tool.django-stubs]
 django_settings_module = "sandbox.settings.dev"

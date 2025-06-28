@@ -3,7 +3,6 @@ stages:
   - release
 
 variables:
-  POETRY_VIRTUALENVS_CREATE: "false"
   PIP_DISABLE_PIP_VERSION_CHECK: "on"
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
@@ -21,8 +20,8 @@ test:
   stage: test
   image: "registry.gitlab.com/thelabnyc/python:${IMAGE}"
   script:
-    - pip install tox
-    - tox
+    - uv sync
+    - uv run tox
   coverage: '/^TOTAL.+?(\d+\%)$/'
   parallel:
     matrix:
