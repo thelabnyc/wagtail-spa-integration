@@ -1,5 +1,6 @@
-from django.conf import settings
 from django import template
+from django.conf import settings
+
 from ..utils import hash_draft_code
 
 register = template.Library()

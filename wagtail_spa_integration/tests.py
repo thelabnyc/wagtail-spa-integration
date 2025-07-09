@@ -1,13 +1,14 @@
-from django.test import override_settings, RequestFactory
-from wagtail.api.v2.router import WagtailAPIRouter
-from wagtail.models import Page, Site
-from wagtail.contrib.redirects.models import Redirect
-from wagtail.test.utils import WagtailPageTests
+from django.test import RequestFactory, override_settings
 from rest_framework.test import APIRequestFactory
-from sandbox.models import FooPage
-from .views import SPAExtendedPagesAPIEndpoint, RedirectViewSet, sitemap
-from .utils import hash_draft_code
+from wagtail.api.v2.router import WagtailAPIRouter
+from wagtail.contrib.redirects.models import Redirect
+from wagtail.models import Page, Site
+from wagtail.test.utils import WagtailPageTests
 
+from sandbox.models import FooPage
+
+from .utils import hash_draft_code
+from .views import RedirectViewSet, SPAExtendedPagesAPIEndpoint, sitemap
 
 TEST_DRAFT_CODE = "abc"
 

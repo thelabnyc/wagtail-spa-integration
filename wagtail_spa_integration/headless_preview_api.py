@@ -1,11 +1,11 @@
 # Derived from https://github.com/torchbox/wagtail-headless-preview#example
 
 from django.contrib.contenttypes.models import ContentType
-from wagtail.api.v2.views import PagesAPIViewSet
-from wagtail_headless_preview.models import PagePreview
-from wagtail.models import Page
 from rest_framework.request import Request
 from rest_framework.response import Response
+from wagtail.api.v2.views import PagesAPIViewSet
+from wagtail.models import Page
+from wagtail_headless_preview.models import PagePreview
 
 
 class PagePreviewAPIViewSet(PagesAPIViewSet):
@@ -14,7 +14,6 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
     )
 
     def listing_view(self, request: Request) -> Response:
-
         page = self.get_object()
         serializer = self.get_serializer(page)
         return Response(serializer.data)

@@ -1,6 +1,6 @@
+from rest_framework import serializers
 from wagtail.contrib.redirects.models import Redirect
 from wagtail.models import Site
-from rest_framework import serializers
 
 
 class RedirectSerializer(serializers.ModelSerializer[Redirect]):
