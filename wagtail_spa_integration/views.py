@@ -1,25 +1,25 @@
 from typing import Any
 
 from django.conf import settings
-from django.urls import path, URLPattern
 from django.http import (
     Http404,
+    HttpRequest,
     HttpResponsePermanentRedirect,
     HttpResponseRedirect,
-    HttpRequest,
 )
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.urls import URLPattern, path
 from django_filters import rest_framework as filters
-from wagtail.api.v2.views import PagesAPIViewSet
-from wagtail.api.v2.utils import BadRequestError, page_models_from_string
-from wagtail.contrib.sitemaps.sitemap_generator import Sitemap
-from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
-from wagtail.contrib.redirects.models import Redirect
-from wagtail.models import Site, Page, PageQuerySet, Revision
-from rest_framework import viewsets, permissions
+from rest_framework import permissions, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
+from wagtail.api.v2.utils import BadRequestError, page_models_from_string
+from wagtail.api.v2.views import PagesAPIViewSet
+from wagtail.contrib.redirects.models import Redirect
+from wagtail.contrib.sitemaps.sitemap_generator import Sitemap
+from wagtail.contrib.sitemaps.views import sitemap as wagtail_sitemap
+from wagtail.models import Page, PageQuerySet, Revision, Site
 
 from .filters import RedirectFilter
 from .serializers import RedirectSerializer

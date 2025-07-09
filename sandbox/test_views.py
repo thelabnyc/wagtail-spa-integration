@@ -1,6 +1,6 @@
 from django.core import management
 from django.core.management.commands import loaddata
-from rest_framework import views, response
+from rest_framework import response, views
 
 
 class CreateFixturesView(views.APIView):

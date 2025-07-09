@@ -1,14 +1,15 @@
 from django.conf import settings
-from django.urls import include, path
 from django.contrib import admin
-
-from wagtail.admin import urls as wagtailadmin_urls
-from wagtail import urls as wagtail_urls
-from wagtail.documents import urls as wagtaildocs_urls
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+from wagtail import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+
 from wagtail_spa_integration.views import RedirectViewSet, sitemap
-from .test_views import CreateFixturesView
+
 from .api import api_router
+from .test_views import CreateFixturesView
 
 router = DefaultRouter()
 router.register("redirects", RedirectViewSet, basename="redirects")
