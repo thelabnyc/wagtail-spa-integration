@@ -948,7 +948,7 @@ dev = [
     { name = "isort", specifier = ">=6.0.1" },
     { name = "mypy", specifier = "==1.17.1" },
     { name = "ruff", specifier = ">=0.12.12" },
-    { name = "tox", specifier = ">=4.30.1" },
+    { name = "tox", specifier = ">=4.30.2" },
     { name = "tox-uv", specifier = ">=1.28.0" },
 ]
 
