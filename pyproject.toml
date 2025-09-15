@@ -35,7 +35,7 @@ email = "thelabdev@thelab.co"
 dev = [
     "mypy (==1.18.1)",
     "django-cors-headers ==4.8.0",
-    "django-stubs (==5.2.2)",
+    "django-stubs (==5.2.4)",
     "djangorestframework-stubs (==3.16.2)",
     "tox>=4.30.2",
     "tox-uv>=1.28.0",
