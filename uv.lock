@@ -953,7 +953,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "coverage", specifier = ">=7.10.6" },
+    { name = "coverage", specifier = ">=7.10.7" },
     { name = "django-cors-headers", specifier = "==4.9.0" },
     { name = "django-stubs", specifier = "==5.2.5" },
     { name = "djangorestframework-stubs", specifier = "==3.16.3" },
