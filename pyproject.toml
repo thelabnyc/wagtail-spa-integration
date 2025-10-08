@@ -20,7 +20,7 @@ dependencies = [
     "wagtail (>=7.0)",
     "Django (>=4.2)",
     "wagtail-headless-preview (>=0.8,<0.9)",
-    "django-filter (>=25.1,<26)",
+    "django-filter (>=25.2,<26)",
 ]
 requires-python = ">=3.11"
 
