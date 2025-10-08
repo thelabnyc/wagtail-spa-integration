@@ -946,7 +946,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=4.2" },
-    { name = "django-filter", specifier = ">=25.1,<26" },
+    { name = "django-filter", specifier = ">=25.2,<26" },
     { name = "wagtail", specifier = ">=7.0" },
     { name = "wagtail-headless-preview", specifier = ">=0.8,<0.9" },
 ]
