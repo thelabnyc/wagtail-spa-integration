@@ -18,7 +18,7 @@ classifiers = [
 ]
 dependencies = [
     "wagtail (>=7.0)",
-    "Django (>=4.2)",
+    "Django (>=5.2)",
     "wagtail-headless-preview (>=0.8,<0.9)",
     "django-filter (>=25.2,<26)",
 ]
