@@ -1095,7 +1095,7 @@ dev = [
     { name = "isort", specifier = ">=7.0.0" },
     { name = "mypy", specifier = "==1.19.1" },
     { name = "ruff", specifier = ">=0.14.11" },
-    { name = "tox", specifier = ">=4.34.0" },
+    { name = "tox", specifier = ">=4.34.1" },
     { name = "tox-uv", specifier = ">=1.29.0" },
 ]
 
