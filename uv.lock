@@ -1098,7 +1098,7 @@ dev = [
     { name = "django-cors-headers", specifier = "==4.9.0" },
     { name = "django-stubs", specifier = "==5.2.9" },
     { name = "djangorestframework-stubs", specifier = "==3.16.8" },
-    { name = "isort", specifier = ">=7.0.0" },
+    { name = "isort", specifier = ">=8.0.0" },
     { name = "mypy", specifier = "==1.19.1" },
     { name = "ruff", specifier = ">=0.15.2" },
     { name = "tox", specifier = ">=4.44.0" },
