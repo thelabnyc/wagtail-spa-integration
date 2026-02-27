@@ -1102,8 +1102,8 @@ dev = [
     { name = "isort", specifier = ">=8.0.0" },
     { name = "mypy", specifier = "==1.19.1" },
     { name = "ruff", specifier = ">=0.15.2" },
-    { name = "tox", specifier = ">=4.45.0" },
-    { name = "tox-uv", specifier = ">=1.31.0" },
+    { name = "tox", specifier = ">=4.46.0" },
+    { name = "tox-uv", specifier = ">=1.32.1" },
 ]
 
 [[package]]
