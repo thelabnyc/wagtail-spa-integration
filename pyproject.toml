@@ -39,7 +39,7 @@ dev = [
     "djangorestframework-stubs (==3.16.8)",
     "tox>=4.46.3",
     "tox-uv>=1.33.0",
-    "ruff (>=0.15.2)",
+    "ruff (>=0.15.3)",
     "isort (>=8.0.0)",
     "coverage>=7.13.4",
 ]
