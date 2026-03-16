@@ -38,7 +38,7 @@ dev = [
     "django-stubs (==5.2.9)",
     "djangorestframework-stubs (==3.16.8)",
     "tox>=4.49.1",
-    "tox-uv>=1.33.3",
+    "tox-uv>=1.33.4",
     "ruff (>=0.15.6)",
     "isort (>=8.0.1)",
     "coverage>=7.13.4",
