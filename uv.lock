@@ -1150,7 +1150,7 @@ dev = [
     { name = "isort", specifier = ">=8.0.1" },
     { name = "mypy", specifier = "==1.19.1" },
     { name = "ruff", specifier = ">=0.15.7" },
-    { name = "tox", specifier = ">=4.50.1" },
+    { name = "tox", specifier = ">=4.50.2" },
     { name = "tox-uv", specifier = ">=1.33.4" },
 ]
 
