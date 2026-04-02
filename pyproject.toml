@@ -37,7 +37,7 @@ dev = [
     "django-cors-headers ==4.9.0",
     "django-stubs (==5.2.9)",
     "djangorestframework-stubs (==3.16.8)",
-    "tox>=4.51.0",
+    "tox>=4.52.0",
     "tox-uv>=1.33.4",
     "ruff (>=0.15.8)",
     "isort (>=8.0.1)",
