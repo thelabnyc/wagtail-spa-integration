@@ -1,5 +1,24 @@
 # Changes
 
+## v3.4.0 (2026-05-21)
+
+### Feat
+
+- add wagtail 7.4 LTS to test matrix
+- support Python 3.14
+
+### Fix
+
+- **deps**: update dependency django to >=5.2
+- **deps**: update dependency django-filter to >=25.2,<26
+- **deps**: update dependency wagtail to >=7.0
+- prevent renovate from pointing all URLs at gitlab
+
+### Refactor
+
+- migrate black/flake8 -> ruff
+- migrate from poetry -> uv
+
 ## v3.3.0 (2025-06-04)
 
 ### Feat
