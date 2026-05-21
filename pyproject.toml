@@ -35,8 +35,8 @@ email = "thelabdev@thelab.co"
 dev = [
     "mypy (==1.20.2)",
     "django-cors-headers ==4.9.0",
-    "django-stubs (==5.2.9)",
-    "djangorestframework-stubs (==3.16.9)",
+    "django-stubs (==6.0.4)",
+    "djangorestframework-stubs (==3.17.0)",
     "tox>=4.54.0",
     "tox-uv>=1.35.2",
     "ruff (>=0.15.12)",
@@ -62,7 +62,7 @@ changelog_merge_prerelease = true
 version_provider = "pep621"
 version_scheme = "pep440"
 version_files = ["pyproject.toml:version"]
-pre_bump_hooks = ["pre-commit run --all-files || true"]
+pre_bump_hooks = ["prek run --all-files || true"]
 post_bump_hooks = ["git push origin master $CZ_POST_CURRENT_TAG_VERSION"]
 
 [tool.mypy]
