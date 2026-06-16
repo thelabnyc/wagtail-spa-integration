@@ -1112,14 +1112,14 @@ wheels = [
 
 [[package]]
 name = "wagtail-headless-preview"
-version = "0.8.0"
+version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "wagtail" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b4/28/87fda34fd89999bee03519a614ddca608def6d07b69d93365833c434b9c5/wagtail_headless_preview-0.8.0.tar.gz", hash = "sha256:581d8419cd1ef1f7de88235445e9695e5591d46259283d56bfe814e8620fa1d5", size = 13957, upload-time = "2024-02-23T15:53:44.986Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/46/c4/5fe6d6c0df1a11be144d6cc9e0f951fb871490208b93237eeda75f8a1bd5/wagtail_headless_preview-0.9.0.tar.gz", hash = "sha256:dbabbb614bd1689f048738c46034c557a3ee426e0ef80feb4831bcfc93a24e15", size = 14887, upload-time = "2026-06-13T10:49:37.597Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/62/57/bb6c10a11f7a0ec0d8e10ec99b4c7b5a6036e8846e61d145966b6c72113d/wagtail_headless_preview-0.8.0-py3-none-any.whl", hash = "sha256:91b305c36573490856e212f9e5645ada81f72ad37f1bb00e6feddc5537252358", size = 12301, upload-time = "2024-02-23T15:53:43.904Z" },
+    { url = "https://files.pythonhosted.org/packages/69/80/0cc32c5192f875d5556487cc71e7280bbfd734b5d6bf24156c5f15e23c92/wagtail_headless_preview-0.9.0-py3-none-any.whl", hash = "sha256:9047701345323d77938c07685279770646c92545bed851c6608f026ac645f16d", size = 12781, upload-time = "2026-06-13T10:49:35.969Z" },
 ]
 
 [[package]]
@@ -1152,7 +1152,7 @@ requires-dist = [
     { name = "django", specifier = ">=5.2" },
     { name = "django-filter", specifier = ">=25.2,<26" },
     { name = "wagtail", specifier = ">=7.0" },
-    { name = "wagtail-headless-preview", specifier = ">=0.8,<0.9" },
+    { name = "wagtail-headless-preview", specifier = ">=0.9.0,<0.10" },
 ]
 
 [package.metadata.requires-dev]
