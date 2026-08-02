@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django_filters import rest_framework as filters
 from wagtail.contrib.redirects.models import Redirect
 
@@ -7,4 +9,4 @@ class RedirectFilter(filters.FilterSet):
 
     class Meta:
         model = Redirect
-        fields = ["old_path", "site"]
+        fields: ClassVar = ["old_path", "site"]

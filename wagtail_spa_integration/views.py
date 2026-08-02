@@ -215,7 +215,7 @@ class SPAExtendedPagesAPIEndpoint(PagesAPIViewSet):
 class RedirectViewSet(viewsets.ReadOnlyModelViewSet[Redirect]):
     queryset = Redirect.objects.all()
     serializer_class = RedirectSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = (permissions.AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = RedirectFilter
     model = Redirect
