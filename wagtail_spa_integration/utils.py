@@ -19,7 +19,7 @@ class PageQuerySet(QuerySet[PageType], PageQuerySetMixin[PageType], Generic[Page
 def exclude_page_type(
     queryset: PageQuerySet[PageType], page_models: list[type[PageType]]
 ) -> PageQuerySet[PageType]:
-    qs = queryset.none()
+    qs: PageQuerySet[PageType] = queryset.none()
     for model in page_models:
         qs |= queryset.not_type(model)
     return qs
