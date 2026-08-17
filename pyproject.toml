@@ -35,11 +35,11 @@ email = "thelabdev@thelab.co"
 dev = [
     "mypy (==1.20.2)",
     "django-cors-headers ==4.9.0",
-    "django-stubs (==6.0.7)",
+    "django-stubs (==6.1.0)",
     "djangorestframework-stubs (==3.18.0)",
-    "tox>=4.59.0",
+    "tox>=4.60.0",
     "tox-uv>=1.36.0",
-    "ruff (>=0.16.2)",
+    "ruff (>=0.16.3)",
     "isort (>=8.0.1)",
     "coverage>=7.15.4",
 ]
@@ -106,6 +106,22 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = "sandbox.models"
 ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "treebeard.*"
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = "modelcluster.*"
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = "modelsearch.*"
+follow_untyped_imports = true
+
+[[tool.mypy.overrides]]
+module = "taggit.*"
+follow_untyped_imports = true
 
 
 [tool.django-stubs]
