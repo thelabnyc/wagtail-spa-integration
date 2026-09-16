@@ -41,7 +41,7 @@ dev = [
     "tox-uv>=1.36.0",
     "ruff (>=0.16.7)",
     "isort (>=9.0.1)",
-    "coverage>=7.16.0",
+    "coverage>=7.16.1",
 ]
 
 [tool.hatch.build.targets.wheel]
