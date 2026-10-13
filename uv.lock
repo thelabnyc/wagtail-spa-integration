@@ -1622,7 +1622,7 @@ dev = [
     { name = "djangorestframework-stubs", specifier = "==3.18.1" },
     { name = "isort", specifier = ">=9.0.2" },
     { name = "mypy", specifier = "==2.4.0" },
-    { name = "ruff", specifier = ">=0.16.10" },
+    { name = "ruff", specifier = ">=0.17.0" },
     { name = "tox", specifier = ">=4.65.1" },
     { name = "tox-uv", specifier = ">=1.36.1" },
 ]
