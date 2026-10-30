@@ -1460,7 +1460,7 @@ dev = [
 requires-dist = [
     { name = "django", specifier = ">=5.2" },
     { name = "django-filter", specifier = ">=26.2,<27" },
-    { name = "wagtail", specifier = ">=7.0" },
+    { name = "wagtail", specifier = ">=7.4" },
     { name = "wagtail-headless-preview", specifier = ">=0.9.0,<0.10" },
 ]
 
