@@ -1640,8 +1640,8 @@ dev = [
     { name = "isort", specifier = ">=9.0.2" },
     { name = "mypy", specifier = "==2.4.0" },
     { name = "ruff", specifier = ">=0.17.3" },
-    { name = "tox", specifier = ">=4.67.1" },
-    { name = "tox-uv", specifier = ">=1.37.0" },
+    { name = "tox", specifier = ">=4.67.2" },
+    { name = "tox-uv", specifier = ">=1.37.1" },
 ]
 
 [[package]]
