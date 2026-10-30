@@ -1,22 +1,20 @@
-from typing import Generic, Protocol, TypeVar
+from typing import Protocol
 import hashlib
 
 from django.db.models import QuerySet
 from django.utils.timezone import datetime  # type: ignore[attr-defined]
 from wagtail.models import Page
 
-PageType = TypeVar("PageType", bound=Page)
 
-
-class PageQuerySetMixin(Protocol[PageType]):
+class PageQuerySetMixin[PageType: Page](Protocol):
     def not_type(self, model_class: type[PageType]) -> "PageQuerySet[PageType]": ...
 
 
-class PageQuerySet(QuerySet[PageType], PageQuerySetMixin[PageType], Generic[PageType]):
+class PageQuerySet[PageType: Page](QuerySet[PageType], PageQuerySetMixin[PageType]):
     pass
 
 
-def exclude_page_type(
+def exclude_page_type[PageType: Page](
     queryset: PageQuerySet[PageType], page_models: list[type[PageType]]
 ) -> PageQuerySet[PageType]:
     qs: PageQuerySet[PageType] = queryset.none()
