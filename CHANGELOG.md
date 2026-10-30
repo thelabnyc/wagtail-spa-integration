@@ -1,5 +1,22 @@
 # Changes
 
+## v3.5.0 (2026-10-30)
+
+### Feat
+
+- support Wagtail 8.0 and Django 6.0/6.1, drop Wagtail 7.0
+- support Python 3.15 and drop Python 3.11
+
+### Fix
+
+- **deps**: update dependency django-filter to >=26.2,<27
+- **deps**: update dependency django-filter to v26
+- **deps**: update dependency wagtail-headless-preview to >=0.9.0,<0.10
+
+### Refactor
+
+- adopt Python 3.12 syntax
+
 ## v3.4.0 (2026-05-21)
 
 ### Feat
